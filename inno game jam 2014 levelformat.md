@@ -12,10 +12,10 @@ Definition der Animationen eines Bilds. Wenn diese Datei existiert, wird *.png a
 
 Format:
 
-<Framebreite> <Framehöhe>
-<Animation 1 Name> <Animation 1 Start> <Animation 1 Länge>
+{Framebreite} {Framehöhe}
+{Animation 1 Name} {Animation 1 Start} {Animation 1 Länge}
 ...
-<Animation N Name> <Animation N Start> <Animation N Länge>
+{Animation N Name} {Animation N Start} {Animation N Länge}
 
 Standardmäßig wird die Animation "idle" abgespielt.
 
@@ -47,12 +47,12 @@ Spielrelevante Informationen, wie zu sammelnde Objekte und der Spielerstartpunkt
 
 Format:
 
-<Rot> <Grün> <Blau> <Typ> <Parameter1> <Parameter2> ... <ParameterN>
+{Rot} {Grün} {Blau} {Typ} {Parameter1} {Parameter2} ... {ParameterN}
 
 Es gibt folgende Typen:
 
 * Player: Spielerstart (Oben Links)
-* Exit <Breite> <Höhe> : Ausgang
+* Exit {Breite} {Höhe} : Ausgang
 
 
 ## x_y.images.png ##
@@ -65,13 +65,13 @@ Definition der statischen Bilder im Level:
 
 Eine Zeile je Definition, Format:
 
-<Rot> <Grün> <Blau> <Dateiname>
+{Rot} {Grün} {Blau} {Dateiname}
 
 z.B.
 
 0 255 0 test.png
 
--> An grünen Pixeln wird das Bild test.png dargestellt. Wenn dieses animiert ist, so ist das in test.png.animations.txt beschrieben. Es wird die Animation "idle" abgespielt.
+-} An grünen Pixeln wird das Bild test.png dargestellt. Wenn dieses animiert ist, so ist das in test.png.animations.txt beschrieben. Es wird die Animation "idle" abgespielt.
 
 
 ## gameplay.txt ##
