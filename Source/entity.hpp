@@ -23,6 +23,8 @@ protected:
 	Entity();
 
 	void AddComponent( std::unique_ptr< Component >&& component );
+	/// Call once all components are registered so they can do initialization that requires interaction with each other
+	void InitComponents();
 	void AddGroup( Group group );
 
 	/// Returns the given type of Component, if available, or a nullptr

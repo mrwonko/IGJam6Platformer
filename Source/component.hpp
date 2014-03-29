@@ -11,6 +11,8 @@ public:
 
 	virtual const std::string& GetType() const = 0;
 
+	virtual void Init();
+
 protected:
 	Component( Entity& owner );
 

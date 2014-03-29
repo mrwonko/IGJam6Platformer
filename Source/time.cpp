@@ -15,7 +15,7 @@ namespace Time
 
 	void OnTimePassed( const sf::Time& time )
 	{
-		for( auto it : GetCallbacks() )
+		for( const auto& it : GetCallbacks() )
 		{
 			( *it )( time );
 		}

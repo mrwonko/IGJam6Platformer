@@ -24,6 +24,14 @@ void Entity::AddComponent( std::unique_ptr< Component >&& component )
 	}
 }
 
+void Entity::InitComponents()
+{
+	for( auto& it : m_components )
+	{
+		it.second->Init();
+	}
+}
+
 void Entity::AddGroup( Group group )
 {
 	m_groups.insert( group );

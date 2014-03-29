@@ -21,11 +21,11 @@ Standardmäßig wird die Animation "idle" abgespielt.
 
 ## x_y.png ##
 
-Aussehen des Levels, in Stücke geteilt. Es muss ein Stück 0_0 geben!!!
+Aussehen des Levels, in Stücke gleicher Größe (!!!) geteilt. Es muss ein Stück 0_0 geben!!!
 
 Beispiel: 1_2.png ist Horizontal an Position 1 (rechts), Vertikal an Position 2 (unten)
 
-Horizontal (vertikal) aneinander liegende Kacheln müssen die gleiche Höhe (Breite) haben.
+Alle Kacheln müssen die gleiche Höhe und Breite haben!
 
 
 ## x_y.collision.png ##

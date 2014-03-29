@@ -14,3 +14,7 @@ Component* Component::GetComponent( const Entity& entity, const std::string& typ
 {
 	return entity.GetComponent( type );
 }
+
+void Component::Init()
+{
+}

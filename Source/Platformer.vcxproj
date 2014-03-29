@@ -68,21 +68,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="component.cpp" />
+    <ClCompile Include="components\collisionMap.cpp" />
     <ClCompile Include="components\position.cpp" />
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="physics.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp" />
+    <ClInclude Include="components\collisionMap.hpp" />
     <ClInclude Include="components\position.hpp" />
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="debug.hpp" />
     <ClInclude Include="entity.hpp" />
+    <ClInclude Include="physics.hpp" />
     <ClInclude Include="texture.hpp" />
     <ClInclude Include="level.hpp" />
     <ClInclude Include="textureManager.hpp" />
