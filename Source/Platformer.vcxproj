@@ -74,6 +74,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +85,7 @@
     <ClInclude Include="entity.hpp" />
     <ClInclude Include="texture.hpp" />
     <ClInclude Include="level.hpp" />
+    <ClInclude Include="textureManager.hpp" />
     <ClInclude Include="time.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

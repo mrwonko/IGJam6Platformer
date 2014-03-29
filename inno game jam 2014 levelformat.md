@@ -13,9 +13,9 @@ Definition der Animationen eines Bilds. Wenn diese Datei existiert, wird *.png a
 Format:
 
 {Framebreite} {Framehöhe}
-{Animation 1 Name} {Animation 1 Start} {Animation 1 Länge}
+{Animation 1 Name} {Animation 1 Start} {Animation 1 Länge} {Animation 1 FPS}
 ...
-{Animation N Name} {Animation N Start} {Animation N Länge}
+{Animation N Name} {Animation N Start} {Animation N Länge} {Animation N FPS}
 
 Standardmäßig wird die Animation "idle" abgespielt.
 
