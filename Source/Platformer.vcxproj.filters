@@ -63,6 +63,12 @@
     <ClCompile Include="components\trigger.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="components\movable.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\rect.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -99,6 +105,12 @@
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="components\trigger.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\movable.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\rect.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>

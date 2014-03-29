@@ -9,18 +9,27 @@ SpriteComponent::SpriteComponent( Entity& owner, std::shared_ptr< Texture > text
 , m_sprite( texture->GetTexture() )
 , m_texture( texture )
 {
+	// TODO: Animations (register callback)
 }
 
 SpriteComponent::~SpriteComponent( )
 {
+	// TODO: Animations (unregister callback)
+}
+
+void SpriteComponent::Init()
+{
+	m_position = PositionComponent::Get( m_owner );
 }
 
 void SpriteComponent::Draw( sf::RenderTarget& target )
 {
-	PositionComponent* posComp = PositionComponent::Get( m_owner );
-	if( posComp )
+	if( m_position )
 	{
-		m_sprite.setPosition( posComp->GetPosition() );
+		m_sprite.setPosition(
+			float( m_position->GetPosition().x ),
+			float( m_position->GetPosition().y )
+			);
 	}
 	// TODO: Animations
 	target.draw( m_sprite );

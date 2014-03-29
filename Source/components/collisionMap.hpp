@@ -43,7 +43,7 @@ private:
 	}
 
 	Physics& m_physics;
-	const PositionComponent *m_position;
+	const PositionComponent *m_position{ nullptr };
 	const sf::Vector2u m_size;
 	std::vector< bool > m_pixmap;
 };

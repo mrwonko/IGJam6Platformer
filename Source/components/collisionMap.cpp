@@ -7,7 +7,6 @@
 CollisionMapComponent::CollisionMapComponent( Entity& owner, Physics& physics, const sf::Image& image )
 : Component( owner )
 , m_physics( physics )
-, m_position( nullptr )
 , m_size( image.getSize() )
 , m_pixmap( m_size.x * m_size.y, false )
 {

@@ -69,7 +69,9 @@
   <ItemGroup>
     <ClCompile Include="component.cpp" />
     <ClCompile Include="components\collisionMap.cpp" />
+    <ClCompile Include="components\movable.cpp" />
     <ClCompile Include="components\position.cpp" />
+    <ClCompile Include="components\rect.cpp" />
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="components\trigger.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -83,7 +85,9 @@
   <ItemGroup>
     <ClInclude Include="component.hpp" />
     <ClInclude Include="components\collisionMap.hpp" />
+    <ClInclude Include="components\movable.hpp" />
     <ClInclude Include="components\position.hpp" />
+    <ClInclude Include="components\rect.hpp" />
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="components\trigger.hpp" />
     <ClInclude Include="debug.hpp" />

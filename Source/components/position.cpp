@@ -1,13 +1,13 @@
 #include "position.hpp"
 #include <utility>
 
-PositionComponent::PositionComponent( Entity& owner, float x, float y )
+PositionComponent::PositionComponent( Entity& owner, int x, int y )
 : Component( owner )
 , m_position( x, y )
 {
 }
 
-PositionComponent::PositionComponent( Entity& owner, sf::Vector2f&& position )
+PositionComponent::PositionComponent( Entity& owner, sf::Vector2i&& position )
 : Component( owner )
 , m_position( std::move( position ) )
 {

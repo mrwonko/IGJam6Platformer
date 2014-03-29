@@ -1,14 +1,15 @@
 #include "trigger.hpp"
-#include "position.hpp"
+#include "rect.hpp"
 #include "../physics.hpp"
 
-#include <utility>
+#include <cassert>
+#include <stdexcept>
 
-TriggerComponent::TriggerComponent( Entity& owner, Physics& physics, const sf::IntRect& rect, const Callback& onEnter )
+TriggerComponent::TriggerComponent( Entity& owner, Physics& physics, const Callback& onEnter )
 : Component( owner )
 , m_physics( physics )
 , m_onEnter( onEnter )
-, m_rect( rect )
+, m_rect( nullptr )
 {
 	m_physics.RegisterTrigger( *this );
 }
@@ -20,7 +21,11 @@ TriggerComponent::~TriggerComponent()
 
 void TriggerComponent::Init()
 {
-	m_position = PositionComponent::Get( m_owner );
+	m_rect = RectComponent::Get( m_owner );
+	if( !m_rect )
+	{
+		throw std::logic_error( "TriggerComponent used without RectComponent!" );
+	}
 }
 
 TriggerComponent* TriggerComponent::Get( const Entity& entity )
@@ -41,11 +46,6 @@ void TriggerComponent::OnEnter( Entity& other ) const
 
 sf::IntRect TriggerComponent::GetGlobalRect() const
 {
-	sf::IntRect rect = m_rect;
-	if( m_position )
-	{
-		rect.left += m_position->GetPosition().x;
-		rect.top += m_position->GetPosition().y;
-	}
-	return rect;
+	assert( m_rect );
+	return m_rect->GetGlobalRect();
 }
