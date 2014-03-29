@@ -5,6 +5,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 
 GameplaySettings::GameplaySettings( const std::string& levelpath )
 : playerSize( 10, 32 )
@@ -42,6 +43,10 @@ void GameplaySettings::ParseLine( const std::string& line )
 	{
 		ss >> playerSize.y;
 	}
+	else if( type == "playerspeed" )
+	{
+		ss >> playerSpeed;
+	}
 	else if( type == "playeroffsetx" )
 	{
 		ss >> playerOffset.x;
@@ -70,4 +75,15 @@ void GameplaySettings::ParseLine( const std::string& line )
 	{
 		Debug::Warning( "gameplay.txt includes invalid line: ", line );
 	}
+}
+
+MoveIntentComponent::Parameters GameplaySettings::GetMoveIntentParameters() const
+{
+	MoveIntentComponent::Parameters parameters
+	{
+		playerSpeed,
+		// jump impulse, arrived at via math
+		int( std::round( std::sqrt( float( 2 * gravity * jumpHeight ) ) ) )
+	};
+	return parameters;
 }

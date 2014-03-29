@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <functional>
 
 #include "../component.hpp"
 
@@ -25,9 +26,15 @@ public:
 	MovableComponent( Entity& owner, Physics& physics, const sf::Vector2i& velocity = sf::Vector2i( 0, 0 ) );
 	~MovableComponent();
 
-	const std::string& GetType( ) const;
+	const std::string& GetType() const;
 
 	static std::shared_ptr< MovableComponent > Get( const Entity& entity );
+
+	/// Defines callback for movable-movable collisions
+	void SetCollideCallback( std::function< void( Entity& ) > callback )
+	{
+		m_onCollideCallback = callback;
+	}
 
 	void Init();
 
@@ -39,14 +46,18 @@ public:
 
 	bool OnFloor() const;
 
+	/// Movable-Movable collisions
+	void OnCollide( Entity& other ) const;
+
 private:
+	void Update( const sf::Time& delta );
+	sf::Vector2i& GetVelocity( ) { return m_velocity; }
+
 	Physics& m_physics;
 	std::shared_ptr< PositionComponent > m_position;
 	std::shared_ptr< RectComponent > m_rect;
 	std::shared_ptr< GravityComponent > m_gravity;
 	std::shared_ptr< MoveIntentComponent > m_moveIntent;
 	sf::Vector2i m_velocity;
-
-	void Update( const sf::Time& delta );
-	sf::Vector2i& GetVelocity() { return m_velocity; }
+	std::function< void( Entity& ) > m_onCollideCallback;
 };

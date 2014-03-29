@@ -82,3 +82,8 @@ void MovableComponent::Update( const sf::Time& delta )
 		m_velocity = m_moveIntent->Apply( m_velocity, delta );
 	}
 }
+
+void MovableComponent::OnCollide( Entity& other ) const
+{
+	if( m_onCollideCallback ) m_onCollideCallback( other );
+}

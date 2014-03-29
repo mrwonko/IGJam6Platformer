@@ -3,6 +3,8 @@
 #include "time.hpp"
 #include "components/collisionMap.hpp"
 #include "components/movable.hpp"
+#include "components/trigger.hpp"
+#include "components/health.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -139,7 +141,7 @@ void operator|=( Physics::MoveResult& lhs, Physics::MoveResult rhs )
 	lhs = Physics::MoveResult( int( lhs ) | int( rhs ) );
 }
 
-bool operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
+int operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
 {
 	return int( lhs ) & int( rhs );
 }
@@ -201,7 +203,8 @@ void Physics::Move( MovableComponent* movable )
 		}
 		if( result & MoveResult::Killed )
 		{
-
+			auto healthComp = HealthComponent::Get( movable->GetOwner() );
+			if( healthComp ) healthComp->Kill();
 		}
 		movable->GetPosition() = movable->GetPosition() + offset;
 	}
@@ -286,8 +289,30 @@ Physics::MoveResult Physics::IsMovePossible( const sf::IntRect& rect, const sf::
 
 void Physics::FindCollisions()
 {
-	// TODO
-	// Movable-Trigger collisions
+	for( auto it = m_movables.begin(); it != m_movables.end(); ++it )
+	{
+		MovableComponent* movable = *it;
+		sf::IntRect movableRect( movable->GetGlobalRect() );
 
-	// Movable-Movable collisions
+		// Movable-Trigger collisions
+		for( auto trigger : m_triggers )
+		{
+			if( movableRect.intersects( trigger->GetGlobalRect() ) )
+			{
+				trigger->OnEnter( movable->GetOwner() );
+			}
+		}
+
+		// Movable-Movable collisions
+		auto it2 = it; // start at next movable
+		for( ++it2; it2 != m_movables.end( ); ++it2 )
+		{
+			MovableComponent* movable2 = *it2;
+			if( movableRect.intersects( movable2->GetGlobalRect( ) ) )
+			{
+				movable->OnCollide( movable2->GetOwner( ) );
+				movable2->OnCollide( movable->GetOwner( ) );
+			}
+		}
+	}
 }

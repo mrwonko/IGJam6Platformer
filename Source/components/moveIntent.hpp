@@ -9,13 +9,15 @@ namespace sf
 	class Time;
 }
 
-class GameplaySettings;
+struct GameplaySettings;
 
 class MoveIntentComponent : public Component
 {
 public: 
 	struct Parameters
 	{
+		int moveSpeed;
+		int jumpImpulse;
 	};
 
 	MoveIntentComponent( Entity& owner, Parameters&& parameters );
