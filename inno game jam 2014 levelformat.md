@@ -84,4 +84,5 @@ Enthält Gameplay Informationen, im Format "Name Wert", Werte sind positive Zahle
 * PlayerOffsetX: Abstand des Kollisionsrechtecks vom linken Rand des Bilds
 * PlayerOffsetY: Abstand des Kollisionsrechtecks vom rechten Rand des Bilds
 * JumpHeight: Sprunghöhe in Pixeln (???)
+* StepHeight: Stufen dieser Höhe können ohne Sprung erklommen werden.
 * Gravity: Erdanziehungskraft in Pixeln pro Quadratsekunde
