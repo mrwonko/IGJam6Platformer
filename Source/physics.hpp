@@ -28,6 +28,13 @@ public:
 
 	bool OnFloor( const sf::IntRect& rect ) const;
 
+	enum class MoveResult : char
+	{
+		Success,
+		BlockedHorizontally = 1 << 0,
+		BlockedVertically = 1 << 1,
+		Killed = 1 << 2 // blocked by a PixelType::Killer
+	};
 private:
 	Physics( const Physics& ) = delete;
 	Physics( Physics&& ) = delete;
@@ -35,6 +42,20 @@ private:
 
 	PixelType GetPixelType( int x, int y ) const;
 	void Update( const sf::Time& delta );
+
+	/**
+		Tries moving the moveable according to its velocity.
+		Updates velocity in case the collisionmap is in the way.
+		Ignores collisions with other movables or triggers.
+	**/
+	void Move( MovableComponent* moveable );
+
+	MoveResult IsMovePossible( const sf::IntRect& rect, const sf::Vector2i direction );
+
+	/**
+		Finds movable-movable and movable-trigger collisions and calls the appropriate methods.
+	**/
+	void FindCollisions();
 
 	typedef std::set< TriggerComponent* > TriggerSet;
 	typedef std::set< MovableComponent* > MovableSet;

@@ -76,6 +76,7 @@
     <ClCompile Include="component.cpp" />
     <ClCompile Include="components\collisionMap.cpp" />
     <ClCompile Include="components\gravity.cpp" />
+    <ClCompile Include="components\health.cpp" />
     <ClCompile Include="components\movable.cpp" />
     <ClCompile Include="components\moveIntent.cpp" />
     <ClCompile Include="components\position.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="component.hpp" />
     <ClInclude Include="components\collisionMap.hpp" />
     <ClInclude Include="components\gravity.hpp" />
+    <ClInclude Include="components\health.hpp" />
     <ClInclude Include="components\movable.hpp" />
     <ClInclude Include="components\moveIntent.hpp" />
     <ClInclude Include="components\position.hpp" />

@@ -41,7 +41,7 @@ Für jedes x_y.png muss es ein x_y.collision.png geben.
 
 ## x_y.game.png ##
 
-Spielrelevante Informationen, wie zu sammelnde Objekte und der Spielerstartpunkt, Bedeutung der Farben in game.txt definiert. Obere linke Ecke entsprechend anmalen.
+Spielrelevante Informationen, wie zu sammelnde Objekte und der Spielerstartpunkt, Bedeutung der Farben in game.txt definiert. Obere linke Ecke entsprechend anmalen. Unwichtige Pixel transparent (!).
 
 ### game.txt ###
 

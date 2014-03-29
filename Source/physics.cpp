@@ -2,8 +2,11 @@
 #include "debug.hpp"
 #include "time.hpp"
 #include "components/collisionMap.hpp"
+#include "components/movable.hpp"
 
 #include <cassert>
+#include <cmath>
+#include <algorithm>
 
 Physics::Physics()
 : m_frameCallback( [ this ]( const sf::Time& delta ) { Update( delta ); } )
@@ -123,5 +126,168 @@ PixelType Physics::GetPixelType ( int x, int y ) const
 
 void Physics::Update( const sf::Time& delta )
 {
-	// TODO: Physics
+	// Move movables
+	for( auto& movable : m_movables )
+	{
+		movable->Update( delta );
+		Move( movable );
+	}
+}
+
+void operator|=( Physics::MoveResult& lhs, Physics::MoveResult rhs )
+{
+	lhs = Physics::MoveResult( int( lhs ) | int( rhs ) );
+}
+
+bool operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
+{
+	return int( lhs ) & int( rhs );
+}
+
+void Physics::Move( MovableComponent* movable )
+{
+	// major axis is that with the bigger absolute velocity
+	bool xMajor = true;
+	int majorComponent = movable->GetVelocity().x;
+	int minorComponent = movable->GetVelocity().y;
+	sf::Vector2i majorAxis( majorComponent / std::abs( majorComponent ), 0 );
+	sf::Vector2i minorAxis( 0, minorComponent / std::abs( minorComponent ) );
+	if( std::abs( minorComponent ) > std::abs( majorComponent ) )
+	{
+		std::swap( minorComponent, majorComponent );
+		std::swap( majorAxis, minorAxis );
+		xMajor = false;
+	}
+	const int majorSign = majorComponent > 0 ? 1 : -1;
+	const int minorSign = minorComponent > 0 ? 1 : -1;
+
+	assert( std::abs( majorComponent ) >= std::abs( minorComponent ) );
+
+	// Move along the major axis primarily and along the minor one when necessary.
+	int prevTotalMinorOffset = 0;
+	for( int major = 0; major != majorComponent; major += majorSign )
+	{
+		sf::Vector2i offset( majorAxis );
+		const int totalMinorOffset = minorComponent * major / majorComponent;
+		bool stop = false;
+		if( totalMinorOffset != prevTotalMinorOffset )
+		{
+			assert( std::abs( totalMinorOffset - prevTotalMinorOffset ) == 1 );
+			offset += minorAxis;
+		}
+		// One component may have been changed to 0 due to collision
+		if( offset == sf::Vector2i( 0, 0 ) )
+		{
+			continue;
+		}
+		MoveResult result = IsMovePossible( movable->GetGlobalRect( ), offset );
+
+		// TODO: Steps?
+		if( result & MoveResult::BlockedHorizontally )
+		{
+			offset.x = 0;
+			majorAxis.x = 0;
+			minorAxis.x = 0;
+			movable->GetVelocity().x = 0;
+			stop |= movable->GetVelocity().y == 0;
+		}
+		if( result & MoveResult::BlockedVertically )
+		{
+			offset.y = 0;
+			majorAxis.y = 0;
+			minorAxis.y = 0;
+			movable->GetVelocity().y = 0;
+			stop |= movable->GetVelocity( ).x == 0;
+		}
+		if( result & MoveResult::Killed )
+		{
+
+		}
+		movable->GetPosition() = movable->GetPosition() + offset;
+	}
+}
+
+Physics::MoveResult Physics::IsMovePossible( const sf::IntRect& rect, const sf::Vector2i direction )
+{
+	assert( std::abs( direction.x ) <= 1 );
+	assert( std::abs( direction.y ) <= 1 );
+
+	MoveResult result = MoveResult::Success;
+
+	const int x = direction.x > 0 ? rect.left + rect.width - 1 : rect.left;
+	const int y = direction.y > 0 ? rect.top + rect.height - 1 : rect.top;
+
+	// Check horizontally
+	if( direction.x != 0 )
+	{
+		for( int y = rect.top + direction.y; y < rect.top + direction.y + rect.height; ++y )
+		{
+			PixelType type = GetPixelType( x, y );
+			if( type != PixelType::Air )
+			{
+				result |= MoveResult::BlockedHorizontally;
+				if( type == PixelType::Killer )
+				{
+					result |= MoveResult::Killed;
+				}
+				break;
+			}
+		}
+	}
+
+	// Check vertically
+	if( direction.y != 0 )
+	{
+		for( int x = rect.left + direction.x; x < rect.left+ direction.x + rect.width; ++x )
+		{
+			PixelType type = GetPixelType( x, y );
+			if( type != PixelType::Air )
+			{
+				result |= MoveResult::BlockedVertically;
+				if( type == PixelType::Killer )
+				{
+					result |= MoveResult::Killed;
+				}
+				break;
+			}
+		}
+	}
+
+	// Blocked horizontally? Then see if we can move vertically (1 pixel unchecked)
+	if( result == MoveResult::BlockedHorizontally && direction.y != 0 )
+	{
+		const int x = direction.x > 0 ? rect.left : rect.left + rect.width - 1;
+		PixelType type = GetPixelType( x, y );
+		if( type != PixelType::Air )
+		{
+			result |= MoveResult::BlockedVertically;
+			if( type == PixelType::Killer )
+			{
+				result |= MoveResult::Killed;
+			}
+		}
+	}
+	else if( result == MoveResult::BlockedVertically && direction.x != 0 )
+	{
+		const int y = direction.y > 0 ? rect.top : rect.top + rect.height - 1;
+		PixelType type = GetPixelType( x, y );
+		if( type != PixelType::Air )
+		{
+			result |= MoveResult::BlockedVertically;
+			if( type == PixelType::Killer )
+			{
+				result |= MoveResult::Killed;
+			}
+		}
+	}
+
+	return result;
+}
+
+void Physics::FindCollisions()
+{
+	// TODO
+	// Movable-Trigger collisions
+
+	// Movable-Movable collisions
 }
