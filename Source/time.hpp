@@ -6,7 +6,7 @@
 
 namespace Time
 {
-	void OnTimePassed( const sf::Time& time );
+	void OnTimePassed( const sf::Time& delta );
 
 	typedef std::function< void( const sf::Time& ) > Callback;
 

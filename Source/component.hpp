@@ -13,6 +13,9 @@ public:
 
 	virtual void Init();
 
+	const Entity& GetOwner() const { return m_owner;  }
+	Entity& GetOwner() { return m_owner;  }
+
 protected:
 	Component( Entity& owner );
 

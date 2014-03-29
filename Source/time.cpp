@@ -13,11 +13,11 @@ namespace Time
 		return s_callbacks;
 	}
 
-	void OnTimePassed( const sf::Time& time )
+	void OnTimePassed( const sf::Time& delta )
 	{
 		for( const auto& it : GetCallbacks() )
 		{
-			( *it )( time );
+			( *it )( delta );
 		}
 	}
 

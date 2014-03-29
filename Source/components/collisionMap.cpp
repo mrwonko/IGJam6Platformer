@@ -1,5 +1,6 @@
 #include "collisionMap.hpp"
 #include "position.hpp"
+#include "../physics.hpp"
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Color.hpp>
 
@@ -22,10 +23,12 @@ CollisionMapComponent::CollisionMapComponent( Entity& owner, Physics& physics, c
 			}
 		}
 	}
+	m_physics.RegisterCollisionMap( *this );
 }
 
 CollisionMapComponent::~CollisionMapComponent()
 {
+	m_physics.UnregisterCollisionMap( *this );
 }
 
 CollisionMapComponent* CollisionMapComponent::Get( const Entity& entity )

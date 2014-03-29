@@ -1,9 +1,21 @@
 #include "physics.hpp"
 #include "debug.hpp"
+#include "time.hpp"
 #include "components/collisionMap.hpp"
 
 #include <stdexcept>
 #include <cassert>
+
+Physics::Physics()
+{
+	m_frameCallback = [ this ]( const sf::Time& delta ) { Update( delta ); };
+	Time::RegisterCallback( m_frameCallback );
+}
+
+Physics::~Physics()
+{
+	Time::UnregisterCallback( m_frameCallback );
+}
 
 void Physics::RegisterTrigger( TriggerComponent& trigger )
 {
@@ -123,4 +135,9 @@ bool Physics::IsSolid( int x, int y ) const
 	{
 		return it->second->IsSolid( localCoord );
 	}
+}
+
+void Physics::Update( const sf::Time& delta )
+{
+	// TODO: Physics
 }
