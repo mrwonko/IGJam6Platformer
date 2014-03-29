@@ -9,9 +9,14 @@
 #include <SFML/Graphics/Image.hpp>
 
 
-Tile::Tile( sf::Vector2i&& position, std::shared_ptr< const Texture > texture, SpriteGroup& group, Physics& physics, const sf::Image& collisionMap )
+Tile::Tile( const sf::Vector2i& position, std::shared_ptr< const Texture > texture, SpriteGroup& group, Physics& physics, const sf::Image& collisionMap )
 {
-	AddComponent( std::make_shared< PositionComponent >( *this, std::move( position ) ) );
+	AddComponent( std::make_shared< PositionComponent >( *this, 
+		sf::Vector2i(
+			position.x * collisionMap.getSize().x,
+			position.y * collisionMap.getSize().y
+			)
+		) );
 	AddComponent( std::make_shared< SpriteComponent >( *this, texture, group ) );
 	AddComponent( std::make_shared< CollisionMapComponent >( *this, physics, collisionMap ) );
 

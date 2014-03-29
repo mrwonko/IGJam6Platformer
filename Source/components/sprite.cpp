@@ -12,7 +12,6 @@ SpriteComponent::SpriteComponent( Entity& owner, std::shared_ptr< const Texture 
 , m_texture( texture )
 , m_group( group )
 {
-	m_group.RegisterSprite( *this );
 	// TODO: Animations (register frame callback)
 }
 
@@ -25,6 +24,7 @@ SpriteComponent::~SpriteComponent( )
 void SpriteComponent::Init()
 {
 	m_position = PositionComponent::Get( m_owner );
+	m_group.RegisterSprite( *this );
 }
 
 void SpriteComponent::Draw( sf::RenderTarget& target )

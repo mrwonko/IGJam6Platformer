@@ -11,7 +11,6 @@ TriggerComponent::TriggerComponent( Entity& owner, Physics& physics, const Callb
 , m_onEnter( onEnter )
 , m_rect( nullptr )
 {
-	m_physics.RegisterTrigger( *this );
 }
 
 TriggerComponent::~TriggerComponent()
@@ -26,6 +25,7 @@ void TriggerComponent::Init()
 	{
 		throw std::logic_error( "TriggerComponent used without RectComponent!" );
 	}
+	m_physics.RegisterTrigger( *this );
 }
 
 std::shared_ptr< TriggerComponent > TriggerComponent::Get( const Entity& entity )

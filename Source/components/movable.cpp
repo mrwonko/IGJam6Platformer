@@ -10,7 +10,6 @@ MovableComponent::MovableComponent( Entity& owner, Physics& physics )
 : Component( owner )
 , m_physics( physics )
 {
-	m_physics.RegisterMovable( *this );
 }
 
 MovableComponent::~MovableComponent()
@@ -30,6 +29,7 @@ void MovableComponent::Init()
 	{
 		throw std::logic_error( "MovableComponent used without RectComponent!" );
 	}
+	m_physics.RegisterMovable( *this );
 }
 
 const std::string& MovableComponent::GetType() const

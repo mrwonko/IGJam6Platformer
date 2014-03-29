@@ -18,6 +18,7 @@ int main( int argc, char** argv )
 	TextureManager textureManager;
 	SpriteGroup allSprites;
 	Tile::Ptr tile0_0( Tile::LoadTile( "../data/testlevel", sf::Vector2i( 0, 0 ), allSprites, physics, textureManager ) );
+	Tile::Ptr tile1_0( Tile::LoadTile( "../data/testlevel", sf::Vector2i( 1, 0 ), allSprites, physics, textureManager ) );
 	while( window.isOpen() )
 	{
 		sf::Event ev;
@@ -28,9 +29,9 @@ int main( int argc, char** argv )
 				window.close();
 			}
 		}
-		window.clear( );
+		window.clear();
 		allSprites.DrawAll( window );
-		window.display( );
+		window.display();
 	}
 	return 0;
 }

@@ -32,7 +32,7 @@ public:
 	static Ptr LoadTile( const std::string& levelpath, sf::Vector2i&& position, SpriteGroup& group, Physics& physics, TextureManager& textureManager );
 
 private:
-	Tile( sf::Vector2i&& position, std::shared_ptr< const Texture > texture, SpriteGroup& group, Physics& physics, const sf::Image& collisionMap );
+	Tile( const sf::Vector2i& position, std::shared_ptr< const Texture > texture, SpriteGroup& group, Physics& physics, const sf::Image& collisionMap );
 
 	Tile( const Tile& ) = delete;
 	Tile( Tile&& ) = delete;

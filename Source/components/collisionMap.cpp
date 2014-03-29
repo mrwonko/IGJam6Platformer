@@ -22,7 +22,6 @@ CollisionMapComponent::CollisionMapComponent( Entity& owner, Physics& physics, c
 			}
 		}
 	}
-	m_physics.RegisterCollisionMap( *this );
 }
 
 CollisionMapComponent::~CollisionMapComponent()
@@ -44,6 +43,7 @@ const std::string& CollisionMapComponent::GetType() const
 void CollisionMapComponent::Init()
 {
 	m_position = PositionComponent::Get( m_owner );
+	m_physics.RegisterCollisionMap( *this );
 }
 
 sf::Vector2i CollisionMapComponent::GetPosition() const

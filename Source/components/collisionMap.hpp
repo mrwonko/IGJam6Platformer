@@ -17,13 +17,13 @@ namespace sf
 class CollisionMapComponent : public Component
 {
 public:
-	static std::shared_ptr< CollisionMapComponent > Get( const Entity& entity );
-
 	/// Image: White = Nonsolid, Black = Solid
 	CollisionMapComponent( Entity& owner, Physics& physics, const sf::Image& image );
 	~CollisionMapComponent( );
 
 	const std::string& GetType() const;
+
+	static std::shared_ptr< CollisionMapComponent > Get( const Entity& entity );
 
 	void Init();
 
