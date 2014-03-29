@@ -75,6 +75,9 @@
     <ClCompile Include="spriteGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\staticSprite.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="spriteGroup.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\staticSprite.hpp">
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

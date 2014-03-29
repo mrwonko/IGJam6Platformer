@@ -81,6 +81,7 @@
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="components\trigger.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="entities\staticSprite.cpp" />
     <ClCompile Include="entities\tile.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="image.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="components\trigger.hpp" />
     <ClInclude Include="debug.hpp" />
+    <ClInclude Include="entities\staticSprite.hpp" />
     <ClInclude Include="entities\tile.hpp" />
     <ClInclude Include="entity.hpp" />
     <ClInclude Include="physics.hpp" />
