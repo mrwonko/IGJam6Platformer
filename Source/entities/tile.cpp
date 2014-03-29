@@ -3,6 +3,7 @@
 #include "../components/sprite.hpp"
 #include "../components/collisionMap.hpp"
 #include "../textureManager.hpp"
+#include "../debug.hpp"
 
 #include <sstream>
 
@@ -35,7 +36,7 @@ Tile::Ptr Tile::LoadTile( const std::string& levelpath, sf::Vector2i&& position,
 	sf::Image collisionMap;
 	if( !collisionMap.loadFromFile( filename_base.str() + ".collision.png" ) )
 	{
-		throw std::runtime_error( "Could not load " + filename_base.str() + ".collision.png!" );
+		Debug::Error( "Could not load ", filename_base.str(), ".collision.png!" );
 	}
 	return Ptr( new Tile( std::move( position ), tex, group, physics, collisionMap ) );
 }

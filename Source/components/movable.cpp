@@ -2,9 +2,9 @@
 #include "position.hpp"
 #include "rect.hpp"
 #include "../physics.hpp"
+#include "../debug.hpp"
 
 #include <cassert>
-#include <stdexcept>
 
 MovableComponent::MovableComponent( Entity& owner, Physics& physics )
 : Component( owner )
@@ -23,11 +23,11 @@ void MovableComponent::Init()
 	m_rect = RectComponent::Get( m_owner );
 	if( !m_position )
 	{
-		throw std::logic_error( "MovableComponent used without PositionComponent!" );
+		Debug::Error( "MovableComponent used without PositionComponent!" );
 	}
 	if( !m_rect )
 	{
-		throw std::logic_error( "MovableComponent used without RectComponent!" );
+		Debug::Error( "MovableComponent used without RectComponent!" );
 	}
 	m_physics.RegisterMovable( *this );
 }
@@ -53,4 +53,9 @@ sf::Vector2i MovableComponent::GetPosition() const
 {
 	assert( m_position );
 	return m_position->GetPosition();
+}
+
+bool MovableComponent::OnFloor() const
+{
+	return m_physics.OnFloor( GetGlobalRect() );
 }

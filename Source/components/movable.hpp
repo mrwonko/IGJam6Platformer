@@ -22,6 +22,8 @@ public:
 	sf::IntRect GetGlobalRect() const;
 	sf::Vector2i GetPosition() const;
 
+	bool OnFloor() const;
+
 private:
 	Physics& m_physics;
 	std::shared_ptr< PositionComponent > m_position{ nullptr };

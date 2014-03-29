@@ -4,8 +4,10 @@
 #include <map>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <functional>
 #include "vector2Comparator.hpp"
+#include "colorConversion.hpp"
 
 class TriggerComponent;
 class MovableComponent;
@@ -24,12 +26,14 @@ public:
 	void RegisterCollisionMap( CollisionMapComponent& collisionMap );
 	void UnregisterCollisionMap( CollisionMapComponent& collisionMap );
 
+	bool OnFloor( const sf::IntRect& rect ) const;
+
 private:
 	Physics( const Physics& ) = delete;
 	Physics( Physics&& ) = delete;
 	Physics& operator=( const Physics& ) = delete;
 
-	bool IsSolid( int x, int y ) const;
+	PixelType GetPixelType( int x, int y ) const;
 	void Update( const sf::Time& delta );
 
 	typedef std::set< TriggerComponent* > TriggerSet;

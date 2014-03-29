@@ -2,13 +2,17 @@
 #include "vector2Comparator.hpp"
 #include "entities/tile.hpp"
 
+#include <fstream>
 #include <set>
 #include <cassert>
 
 Level::Level( const std::string& levelpath, TextureManager& textureManager )
-: m_textureManager( textureManager )
+: m_gameplaySettings( levelpath )
+, m_textureManager( textureManager )
 {
-	LoadTiles( levelpath );
+	EntityDefinitions entityDefinitions( LoadEntities( levelpath ) );
+	ImageDefinitions imageDefinitions( LoadImages( levelpath ) );
+	LoadTiles( levelpath, imageDefinitions, entityDefinitions );
 }
 
 void Level::DrawTo( sf::RenderTarget& target )
@@ -16,7 +20,7 @@ void Level::DrawTo( sf::RenderTarget& target )
 	m_allSprites.DrawAll( target );
 }
 
-void Level::LoadTiles( const std::string& levelpath )
+void Level::LoadTiles( const std::string& levelpath, const ImageDefinitions& imageDefinitions, const EntityDefinitions& entityDefinitions )
 {
 	typedef std::set< sf::Vector2i, Vector2iComparator > PositionSet;
 	PositionSet triedPositions;
@@ -37,7 +41,7 @@ void Level::LoadTiles( const std::string& levelpath )
 			{
 				continue;
 			}
-			if( LoadTile( levelpath, currentPosition ) )
+			if( LoadTile( levelpath, currentPosition, imageDefinitions, entityDefinitions ) )
 			{
 				// Tile exists, also try its neighbours
 				for( int x = -1; x <= 1; x += 2 )
@@ -61,7 +65,7 @@ void Level::LoadTiles( const std::string& levelpath )
 	}
 }
 
-bool Level::LoadTile( const std::string& levelpath, const sf::Vector2i& position )
+bool Level::LoadTile( const std::string& levelpath, const sf::Vector2i& position, const ImageDefinitions& imageDefinitions, const EntityDefinitions& entityDefinitions )
 {
 	// Load Visuals and Collision
 	Tile::Ptr tilePtr( Tile::LoadTile( levelpath, sf::Vector2i( position ), m_allSprites, m_physics, m_textureManager ) );
@@ -72,20 +76,33 @@ bool Level::LoadTile( const std::string& levelpath, const sf::Vector2i& position
 	m_entities.AddEntity( std::move( tilePtr ) );
 
 	// load static images
-	LoadImages( levelpath, position );
+	LoadTileImages( levelpath, position, imageDefinitions );
 
 	// load gameplay entities
-	LoadEntities( levelpath, position );
+	LoadTileEntities( levelpath, position, entityDefinitions );
 
 	return true;
 }
 
-void Level::LoadImages( const std::string& levelpath, const sf::Vector2i& position )
+void Level::LoadTileImages( const std::string& levelpath, const sf::Vector2i& position, const ImageDefinitions& imageDefinitions )
 {
 	// TODO
 }
 
-void Level::LoadEntities( const std::string& levelpath, const sf::Vector2i& position )
+void Level::LoadTileEntities( const std::string& levelpath, const sf::Vector2i& position, const EntityDefinitions& entityDefinitions )
 {
 	// TODO
+}
+
+Level::EntityDefinitions Level::LoadEntities( const std::string& levelpath )
+{
+	std::ifstream file( levelpath + "/game.txt" );
+	// TODO
+	return EntityDefinitions();
+}
+
+Level::ImageDefinitions Level::LoadImages( const std::string& levelpath )
+{
+	// TODO
+	return ImageDefinitions();
 }

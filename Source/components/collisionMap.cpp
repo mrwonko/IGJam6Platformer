@@ -8,17 +8,17 @@ CollisionMapComponent::CollisionMapComponent( Entity& owner, Physics& physics, c
 : Component( owner )
 , m_physics( physics )
 , m_size( image.getSize() )
-, m_pixmap( m_size.x * m_size.y, false )
+, m_pixmap( m_size.x * m_size.y, PixelType::Air )
 {
 	// if this is slow consider iterating through image.getAllPixels()
 	for( unsigned int y = 0; y < image.getSize().y; ++y )
 	{
 		for( unsigned int x = 0; x < image.getSize().x; ++x )
 		{
-			sf::Color pixel( image.getPixel( x, y ) );
-			if( unsigned( pixel.r ) + unsigned( pixel.b ) + unsigned( pixel.g ) < 128 * 3 )
+			PixelType type = GetMatchingPixelType( image.getPixel( x, y ) );
+			if( type != PixelType::Air )
 			{
-				m_pixmap[ ConvertCoordinate( x, y ) ] = true;
+				m_pixmap[ ConvertCoordinate( x, y ) ] = type;
 			}
 		}
 	}
@@ -58,7 +58,7 @@ sf::Vector2i CollisionMapComponent::GetPosition() const
 	}
 }
 
-const bool CollisionMapComponent::IsSolid( unsigned int x, unsigned int y ) const
+PixelType CollisionMapComponent::GetPixelType( unsigned int x, unsigned int y ) const
 {
 	return m_pixmap.at( ConvertCoordinate( x, y ) );
 }

@@ -1,6 +1,11 @@
 #include <iostream>
 #include <string>
 
+#ifdef _WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <Windows.h>
+#endif
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
@@ -10,23 +15,29 @@
 
 int main( int argc, char** argv )
 {
-	sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
-
-	TextureManager textureManager;
-	Level testlevel( "../data/testlevel", textureManager );
-	while( window.isOpen() )
+	try
 	{
-		sf::Event ev;
-		while( window.pollEvent( ev ) )
+		sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
+
+		TextureManager textureManager;
+		Level testlevel( "../data/testlevel", textureManager );
+		while( window.isOpen() )
 		{
-			if( ev.type == sf::Event::Closed || ( ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Escape ) )
+			sf::Event ev;
+			while( window.pollEvent( ev ) )
 			{
-				window.close();
+				if( ev.type == sf::Event::Closed || ( ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Escape ) )
+				{
+					window.close();
+				}
 			}
+			window.clear();
+			testlevel.DrawTo( window );
+			window.display();
 		}
-		window.clear();
-		testlevel.DrawTo( window );
-		window.display();
+		return 0;
 	}
-	return 0;
+	catch( ... )
+	{
+	}
 }

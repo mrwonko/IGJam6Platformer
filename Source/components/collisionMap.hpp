@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../component.hpp"
+#include "../colorConversion.hpp"
 
 #include <SFML/System/Vector2.hpp>
 #include <vector>
@@ -30,10 +31,10 @@ public:
 	sf::Vector2i GetPosition() const;
 	sf::Vector2u GetSize() const { return m_size; }
 
-	const bool IsSolid( unsigned int x, unsigned int y ) const;
-	const bool IsSolid( sf::Vector2u position ) const
+	PixelType GetPixelType( unsigned int x, unsigned int y ) const;
+	PixelType GetPixelType( sf::Vector2u position ) const
 	{
-		return IsSolid( position.x, position.y );
+		return GetPixelType( position.x, position.y );
 	}
 
 private:
@@ -45,5 +46,5 @@ private:
 	Physics& m_physics;
 	std::shared_ptr< const PositionComponent > m_position{ nullptr };
 	const sf::Vector2u m_size;
-	std::vector< bool > m_pixmap;
+	std::vector< PixelType > m_pixmap;
 };

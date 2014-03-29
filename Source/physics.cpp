@@ -3,7 +3,6 @@
 #include "time.hpp"
 #include "components/collisionMap.hpp"
 
-#include <stdexcept>
 #include <cassert>
 
 Physics::Physics()
@@ -58,7 +57,7 @@ void Physics::RegisterCollisionMap( CollisionMapComponent& collisionMap )
 	}
 	else if( m_tileSize != collisionMap.GetSize() )
 	{
-		throw std::runtime_error( "Tile size is not uniform!" );
+		Debug::Error( "Tile size is not uniform!" );
 	}
 	// see if it's already registered
 	if( !m_collisionMaps.insert( std::make_pair( collisionMap.GetPosition(), &collisionMap ) ).second )
@@ -75,11 +74,24 @@ void Physics::UnregisterCollisionMap( CollisionMapComponent& collisionMap )
 	}
 }
 
-bool Physics::IsSolid( int x, int y ) const
+bool Physics::OnFloor( const sf::IntRect& rect ) const
 {
+	for( int x = rect.left; x < rect.left + rect.width; ++x )
+	{
+		if( GetPixelType( x, rect.top + rect.height ) != PixelType::Air )
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+PixelType Physics::GetPixelType ( int x, int y ) const
+{
+	// prevent divide by zero
 	if( m_collisionMaps.empty() )
 	{
-		return false;
+		return PixelType::Air;
 	}
 	assert( m_tileSize != sf::Vector2u( 0, 0 ) );
 
@@ -101,11 +113,11 @@ bool Physics::IsSolid( int x, int y ) const
 	if( it == m_collisionMaps.end() )
 	{
 		// all is nonsolid there
-		return false;
+		return PixelType::Air;
 	}
 	else
 	{
-		return it->second->IsSolid( localCoord );
+		return it->second->GetPixelType( localCoord );
 	}
 }
 

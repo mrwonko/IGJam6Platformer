@@ -1,9 +1,9 @@
 #include "trigger.hpp"
 #include "rect.hpp"
 #include "../physics.hpp"
+#include "../debug.hpp"
 
 #include <cassert>
-#include <stdexcept>
 
 TriggerComponent::TriggerComponent( Entity& owner, Physics& physics, const Callback& onEnter )
 : Component( owner )
@@ -23,7 +23,7 @@ void TriggerComponent::Init()
 	m_rect = RectComponent::Get( m_owner );
 	if( !m_rect )
 	{
-		throw std::logic_error( "TriggerComponent used without RectComponent!" );
+		Debug::Error( "TriggerComponent used without RectComponent!" );
 	}
 	m_physics.RegisterTrigger( *this );
 }

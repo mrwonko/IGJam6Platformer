@@ -41,7 +41,7 @@ Für jedes x_y.png muss es ein x_y.collision.png geben.
 
 ## x_y.game.png ##
 
-Spielrelevante Informationen, wie zu sammelnde Objekte und der Spielerstartpunkt, Bedeutung der Farben in game.txt definiert
+Spielrelevante Informationen, wie zu sammelnde Objekte und der Spielerstartpunkt, Bedeutung der Farben in game.txt definiert. Obere linke Ecke entsprechend anmalen.
 
 ### game.txt ###
 
@@ -51,9 +51,17 @@ Format:
 
 Es gibt folgende Typen:
 
-* Player: Spielerstart (Oben Links)
-* Exit {Breite} {Höhe} : Ausgang
+*	Player: Spielerstart (Oben Links)
+*	Exit {Abstand Links} {Abstand Oben} {Breite} {Höhe}: Ausgang
+*	Enemy {Abstand Links} {Abstand Oben} {Breite} {Höhe} {Dateiname (relativ zum Levelverzeichnis)} {Lauf-Verhalten} {Angriffs-Typ}: Gegner.
+	Dabei gibt es folgende Lauf-Verhalten:
+	*	0 Vorwärts laufen und umdrehen, wenn man gegen eine Wand stößt
+	*	1 Wie 0, aber dreht auch um, wenn er sonst stürzen würde
+	Und folgende Angriffstypen:
+	*	0 Nahkampf: Berührung = Tod
+*	Collectible {Abstand Links} {Abstand Oben} {Breite} {Höhe}: Gegenstand, von dem alle eingesammelt werden müssen, um das Level beenden zu können.
 
+Die Abstand/Größe-Definition bezieht sich dabei auf die Kollisionserkennung, Abstand ist relativ zum oberen linken Pixel. Angaben in Pixeln.
 
 ## x_y.images.png ##
 
@@ -65,13 +73,13 @@ Definition der statischen Bilder im Level:
 
 Eine Zeile je Definition, Format:
 
-{Rot} {Grün} {Blau} {Dateiname}
+{Rot} {Grün} {Blau} {Dateiname (relativ zum Levelverzeichnis)}
 
 z.B.
 
 0 255 0 test.png
 
--} An grünen Pixeln wird das Bild test.png dargestellt. Wenn dieses animiert ist, so ist das in test.png.animations.txt beschrieben. Es wird die Animation "idle" abgespielt.
+= An grünen Pixeln wird das Bild test.png dargestellt. Wenn dieses animiert ist, so ist das in test.png.animations.txt beschrieben. Es wird die Animation "idle" abgespielt.
 
 
 ## gameplay.txt ##
