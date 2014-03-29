@@ -5,20 +5,15 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
 
-#include "entities/tile.hpp"
-#include "physics.hpp"
+#include "level.hpp"
 #include "textureManager.hpp"
-#include "spriteGroup.h"
 
 int main( int argc, char** argv )
 {
 	sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
 
-	Physics physics;
 	TextureManager textureManager;
-	SpriteGroup allSprites;
-	Tile::Ptr tile0_0( Tile::LoadTile( "../data/testlevel", sf::Vector2i( 0, 0 ), allSprites, physics, textureManager ) );
-	Tile::Ptr tile1_0( Tile::LoadTile( "../data/testlevel", sf::Vector2i( 1, 0 ), allSprites, physics, textureManager ) );
+	Level testlevel( "../data/testlevel", textureManager );
 	while( window.isOpen() )
 	{
 		sf::Event ev;
@@ -30,7 +25,7 @@ int main( int argc, char** argv )
 			}
 		}
 		window.clear();
-		allSprites.DrawAll( window );
+		testlevel.DrawTo( window );
 		window.display();
 	}
 	return 0;

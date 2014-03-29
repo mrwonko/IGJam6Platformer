@@ -2,7 +2,7 @@
 #include "position.hpp"
 #include "../entity.hpp"
 #include "../texture.hpp"
-#include "../spriteGroup.h"
+#include "../spriteGroup.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 

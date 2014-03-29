@@ -5,6 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Time.hpp>
 #include <functional>
+#include "vector2Comparator.hpp"
 
 class TriggerComponent;
 class MovableComponent;
@@ -30,14 +31,6 @@ private:
 
 	bool IsSolid( int x, int y ) const;
 	void Update( const sf::Time& delta );
-
-	struct Vector2iComparator
-	{
-		bool operator() ( const sf::Vector2i& lhs, const sf::Vector2i& rhs ) const
-		{
-			return lhs.x < rhs.x || ( lhs.x == rhs.x && lhs.y < rhs.y );
-		}
-	};
 
 	typedef std::set< TriggerComponent* > TriggerSet;
 	typedef std::set< MovableComponent* > MovableSet;

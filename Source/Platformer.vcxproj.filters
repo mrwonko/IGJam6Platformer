@@ -78,6 +78,12 @@
     <ClCompile Include="entities\staticSprite.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -125,11 +131,17 @@
     <ClInclude Include="entities\tile.hpp">
       <Filter>Header Files\entities</Filter>
     </ClInclude>
-    <ClInclude Include="spriteGroup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="entities\staticSprite.hpp">
       <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="entityManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteGroup.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector2Comparator.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

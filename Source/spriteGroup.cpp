@@ -1,4 +1,4 @@
-#include "spriteGroup.h"
+#include "spriteGroup.hpp"
 #include "debug.hpp"
 #include "components/sprite.hpp"
 

@@ -7,8 +7,8 @@
 #include <cassert>
 
 Physics::Physics()
+: m_frameCallback( [ this ]( const sf::Time& delta ) { Update( delta ); } )
 {
-	m_frameCallback = [ this ]( const sf::Time& delta ) { Update( delta ); };
 	Time::RegisterCallback( m_frameCallback );
 }
 

@@ -15,7 +15,10 @@ public:
 		Enemy
 	};
 
-	virtual ~Entity( );
+	virtual ~Entity();
+
+	void MarkForDeletion() { m_markedForDeletion = true;  }
+	bool MarkedForDeletion() const { return m_markedForDeletion;  }
 
 	bool HasGroup( Group group ) const;
 
@@ -40,4 +43,5 @@ private:
 
 	ComponentMap m_components;
 	GroupSet m_groups;
+	bool m_markedForDeletion{ false };
 };

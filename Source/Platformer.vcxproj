@@ -84,7 +84,9 @@
     <ClCompile Include="entities\staticSprite.cpp" />
     <ClCompile Include="entities\tile.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="entityManager.cpp" />
     <ClCompile Include="image.cpp" />
+    <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="spriteGroup.cpp" />
@@ -103,12 +105,14 @@
     <ClInclude Include="entities\staticSprite.hpp" />
     <ClInclude Include="entities\tile.hpp" />
     <ClInclude Include="entity.hpp" />
+    <ClInclude Include="entityManager.hpp" />
     <ClInclude Include="physics.hpp" />
-    <ClInclude Include="spriteGroup.h" />
+    <ClInclude Include="spriteGroup.hpp" />
     <ClInclude Include="texture.hpp" />
     <ClInclude Include="level.hpp" />
     <ClInclude Include="textureManager.hpp" />
     <ClInclude Include="time.hpp" />
+    <ClInclude Include="vector2Comparator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
