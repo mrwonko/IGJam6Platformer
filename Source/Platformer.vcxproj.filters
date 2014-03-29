@@ -69,6 +69,12 @@
     <ClCompile Include="components\rect.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="entities\tile.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="components\rect.hpp">
       <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\tile.hpp">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteGroup.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

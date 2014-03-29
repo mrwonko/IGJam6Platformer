@@ -10,7 +10,7 @@ class RectComponent;
 class MovableComponent : public Component
 {
 public:
-	static MovableComponent* Get( const Entity& entity );
+	static std::shared_ptr< MovableComponent > Get( const Entity& entity );
 
 	MovableComponent( Entity& owner, Physics& physics );
 	~MovableComponent();
@@ -24,6 +24,6 @@ public:
 
 private:
 	Physics& m_physics;
-	PositionComponent* m_position{ nullptr };
-	RectComponent* m_rect{ nullptr };
+	std::shared_ptr< PositionComponent > m_position{ nullptr };
+	std::shared_ptr< RectComponent > m_rect{ nullptr };
 };

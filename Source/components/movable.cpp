@@ -38,9 +38,9 @@ const std::string& MovableComponent::GetType() const
 	return type;
 }
 
-MovableComponent* MovableComponent::Get( const Entity& entity )
+std::shared_ptr< MovableComponent > MovableComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< MovableComponent* >( GetComponent( entity, "movable" ) );
+	return std::dynamic_pointer_cast< MovableComponent >( GetComponent( entity, "movable" ) );
 }
 
 sf::IntRect MovableComponent::GetGlobalRect() const

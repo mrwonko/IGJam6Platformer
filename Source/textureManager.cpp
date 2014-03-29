@@ -2,7 +2,7 @@
 #include "texture.hpp"
 #include <cctype>
 
-std::shared_ptr< Texture > TextureManager::Get( const std::string& filename )
+TextureManager::Ptr TextureManager::Get( const std::string& filename )
 {
 	std::string filenameLower;
 	filenameLower.reserve( filename.size() );
@@ -12,7 +12,7 @@ std::shared_ptr< Texture > TextureManager::Get( const std::string& filename )
 	auto it = m_textureMap.find( filenameLower );
 	if( it != m_textureMap.end() )
 	{
-		std::shared_ptr< Texture > tex( it->second.lock() );
+		Ptr tex( it->second.lock() );
 		if( tex )
 		{
 			return tex;

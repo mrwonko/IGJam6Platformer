@@ -23,9 +23,9 @@ sf::IntRect RectComponent::GetGlobalRect() const
 	return rect;
 }
 
-RectComponent* RectComponent::Get( const Entity& entity )
+std::shared_ptr< RectComponent > RectComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< RectComponent* >( GetComponent( entity, "rect" ) );
+	return std::dynamic_pointer_cast< RectComponent >( GetComponent( entity, "rect" ) );
 }
 
 const std::string& RectComponent::GetType( ) const

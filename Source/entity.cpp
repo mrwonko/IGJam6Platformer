@@ -11,16 +11,12 @@ Entity::~Entity()
 {
 }
 
-void Entity::AddComponent( std::unique_ptr< Component >&& component )
+void Entity::AddComponent( std::shared_ptr< Component >&& component )
 {
 	std::string type( component->GetType() );
-	if( m_components.find( type ) != m_components.end() )
+	if( !m_components.insert( std::make_pair( std::move( type ), std::move( component ) ) ).second )
 	{
 		Debug::Warning( "tried to register two ", type, "components!" );
-	}
-	else
-	{
-		m_components.insert( { std::move( type ), std::move( component ) } );
 	}
 }
 
@@ -42,7 +38,7 @@ bool Entity::HasGroup( Group group ) const
 	return m_groups.find( group ) != m_groups.end();
 }
 
-Component* Entity::GetComponent( const std::string& type ) const
+std::shared_ptr< Component > Entity::GetComponent( const std::string& type ) const
 {
 	auto it( m_components.find( std::move( type ) ) );
 	if( it == m_components.end() )
@@ -51,6 +47,6 @@ Component* Entity::GetComponent( const std::string& type ) const
 	}
 	else
 	{
-		return it->second.get();
+		return it->second;
 	}
 }

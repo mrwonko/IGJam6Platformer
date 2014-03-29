@@ -7,7 +7,7 @@
 class PositionComponent : public Component
 {
 public:
-	static PositionComponent* Get( const Entity& entity );
+	static std::shared_ptr< PositionComponent > Get( const Entity& entity );
 
 	PositionComponent( Entity& owner, int x, int y );
 	PositionComponent( Entity& owner, sf::Vector2i&& position );

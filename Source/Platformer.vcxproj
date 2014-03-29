@@ -38,7 +38,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)-d</TargetName>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -75,10 +81,12 @@
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="components\trigger.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="entities\tile.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
+    <ClCompile Include="spriteGroup.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="time.cpp" />
   </ItemGroup>
@@ -91,8 +99,10 @@
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="components\trigger.hpp" />
     <ClInclude Include="debug.hpp" />
+    <ClInclude Include="entities\tile.hpp" />
     <ClInclude Include="entity.hpp" />
     <ClInclude Include="physics.hpp" />
+    <ClInclude Include="spriteGroup.h" />
     <ClInclude Include="texture.hpp" />
     <ClInclude Include="level.hpp" />
     <ClInclude Include="textureManager.hpp" />

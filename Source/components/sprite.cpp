@@ -2,19 +2,24 @@
 #include "position.hpp"
 #include "../entity.hpp"
 #include "../texture.hpp"
+#include "../spriteGroup.h"
+
 #include <SFML/Graphics/RenderTarget.hpp>
 
-SpriteComponent::SpriteComponent( Entity& owner, std::shared_ptr< Texture > texture )
+SpriteComponent::SpriteComponent( Entity& owner, std::shared_ptr< const Texture > texture, SpriteGroup& group )
 : Component( owner )
 , m_sprite( texture->GetTexture() )
 , m_texture( texture )
+, m_group( group )
 {
-	// TODO: Animations (register callback)
+	m_group.RegisterSprite( *this );
+	// TODO: Animations (register frame callback)
 }
 
 SpriteComponent::~SpriteComponent( )
 {
-	// TODO: Animations (unregister callback)
+	m_group.UnregisterSprite( *this );
+	// TODO: Animations (unregister frame callback)
 }
 
 void SpriteComponent::Init()
@@ -35,9 +40,9 @@ void SpriteComponent::Draw( sf::RenderTarget& target )
 	target.draw( m_sprite );
 }
 
-SpriteComponent* SpriteComponent::Get( const Entity& entity )
+std::shared_ptr< SpriteComponent > SpriteComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< SpriteComponent* >( GetComponent( entity, "sprite" ) );
+	return std::dynamic_pointer_cast< SpriteComponent >( GetComponent( entity, "sprite" ) );
 }
 
 const std::string& SpriteComponent::GetType( ) const

@@ -18,9 +18,9 @@ PositionComponent::~PositionComponent()
 }
 
 
-PositionComponent* PositionComponent::Get( const Entity& entity )
+std::shared_ptr< PositionComponent > PositionComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< PositionComponent* >( GetComponent( entity, "position" ) );
+	return std::dynamic_pointer_cast< PositionComponent >( GetComponent( entity, "position" ) );
 }
 
 const std::string& PositionComponent::GetType() const

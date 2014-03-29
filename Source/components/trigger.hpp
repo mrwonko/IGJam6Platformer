@@ -18,7 +18,7 @@ public:
 
 	void Init();
 
-	static TriggerComponent* Get( const Entity& entity );
+	static std::shared_ptr< TriggerComponent > Get( const Entity& entity );
 	const std::string& GetType() const;
 
 	sf::IntRect GetGlobalRect() const;
@@ -28,5 +28,5 @@ public:
 private:
 	Physics& m_physics;
 	Callback m_onEnter;
-	RectComponent* m_rect;
+	std::shared_ptr< RectComponent > m_rect;
 };

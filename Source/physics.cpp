@@ -19,51 +19,33 @@ Physics::~Physics()
 
 void Physics::RegisterTrigger( TriggerComponent& trigger )
 {
-	if( m_triggers.find( &trigger ) != m_triggers.end() )
+	if( !m_triggers.insert( &trigger ).second )
 	{
 		Debug::Warning( "Duplicate Trigger registration" );
-	}
-	else
-	{
-		m_triggers.insert( &trigger );
 	}
 }
 
 void Physics::UnregisterTrigger( TriggerComponent& trigger )
 {
-	auto it = m_triggers.find( &trigger );
-	if( it == m_triggers.end() )
+	if( m_triggers.erase( &trigger ) == 0 )
 	{
 		Debug::Warning( "Trying to unregister unregistered Trigger!" );
-	}
-	else
-	{
-		m_triggers.erase( it );
 	}
 }
 
 void Physics::RegisterMovable( MovableComponent& movable )
 {
-	if( m_movables.find( &movable ) != m_movables.end( ) )
+	if( !m_movables.insert( &movable ).second )
 	{
 		Debug::Warning( "Duplicate Movable registration" );
-	}
-	else
-	{
-		m_movables.insert( &movable );
 	}
 }
 
 void Physics::UnregisterMovable( MovableComponent& movable )
 {
-	auto it = m_movables.find( &movable );
-	if( it == m_movables.end( ) )
+	if( m_movables.erase( &movable ) == 0 )
 	{
 		Debug::Warning( "Trying to unregister unregistered Movable!" );
-	}
-	else
-	{
-		m_movables.erase( it );
 	}
 }
 
@@ -79,27 +61,17 @@ void Physics::RegisterCollisionMap( CollisionMapComponent& collisionMap )
 		throw std::runtime_error( "Tile size is not uniform!" );
 	}
 	// see if it's already registered
-	auto it = m_collisionMaps.find( collisionMap.GetPosition() );
-	if( it != m_collisionMaps.end() )
+	if( !m_collisionMaps.insert( std::make_pair( collisionMap.GetPosition(), &collisionMap ) ).second )
 	{
 		Debug::Warning( "Trying to register multiple CollisionMaps at ", collisionMap.GetPosition().x, ", ", collisionMap.GetPosition().y, "!" );
-	}
-	else
-	{
-		m_collisionMaps[ collisionMap.GetPosition() ] = &collisionMap;
 	}
 }
 
 void Physics::UnregisterCollisionMap( CollisionMapComponent& collisionMap )
 {
-	auto it = m_collisionMaps.find( collisionMap.GetPosition() );
-	if( it == m_collisionMaps.end() )
+	if( m_collisionMaps.erase( collisionMap.GetPosition() ) == 0 )
 	{
 		Debug::Warning( "Trying to unregister unregistered CollisionMap at ", collisionMap.GetPosition().x, ", ", collisionMap.GetPosition().y, "!" );
-	}
-	else
-	{
-		m_collisionMaps.erase( it );
 	}
 }
 

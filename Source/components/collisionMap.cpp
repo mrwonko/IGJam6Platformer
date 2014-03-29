@@ -30,9 +30,9 @@ CollisionMapComponent::~CollisionMapComponent()
 	m_physics.UnregisterCollisionMap( *this );
 }
 
-CollisionMapComponent* CollisionMapComponent::Get( const Entity& entity )
+std::shared_ptr< CollisionMapComponent > CollisionMapComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< CollisionMapComponent* >( GetComponent( entity, "collisionMap" ) );
+	return std::dynamic_pointer_cast< CollisionMapComponent >( GetComponent( entity, "collisionMap" ) );
 }
 
 const std::string& CollisionMapComponent::GetType() const

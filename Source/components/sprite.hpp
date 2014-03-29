@@ -8,6 +8,7 @@
 
 class Texture;
 class PositionComponent;
+class SpriteGroup;
 
 namespace sf
 {
@@ -18,15 +19,15 @@ namespace sf
 class SpriteComponent : public Component
 {
 public:
-	/// Returns an entity's sprite component, if any, or a nullptr.
-	static SpriteComponent* Get( const Entity& entity );
-
-	SpriteComponent( Entity& owner, std::shared_ptr< Texture > texture );
+	SpriteComponent( Entity& owner, std::shared_ptr< const Texture > texture, SpriteGroup& group );
 	~SpriteComponent();
 
 	void Draw( sf::RenderTarget& target );
 
-	const std::string& GetType() const;
+	const std::string& GetType( ) const;
+
+	/// Returns an entity's sprite component, if any, or a nullptr.
+	static std::shared_ptr< SpriteComponent > Get( const Entity& entity );
 
 	void Init();
 
@@ -36,6 +37,7 @@ public:
 
 private:
 	sf::Sprite m_sprite;
-	std::shared_ptr< Texture > m_texture;
-	PositionComponent* m_position{ nullptr };
+	std::shared_ptr< const Texture > m_texture;
+	std::shared_ptr< PositionComponent > m_position{ nullptr };
+	SpriteGroup& m_group;
 };

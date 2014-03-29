@@ -10,7 +10,7 @@ Component::~Component()
 {
 }
 
-Component* Component::GetComponent( const Entity& entity, const std::string& type )
+std::shared_ptr< Component > Component::GetComponent( const Entity& entity, const std::string& type )
 {
 	return entity.GetComponent( type );
 }

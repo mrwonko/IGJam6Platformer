@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 class Entity;
 
@@ -25,5 +26,5 @@ protected:
 
 	Entity& m_owner;
 
-	static Component* GetComponent( const Entity& entity, const std::string& type );
+	static std::shared_ptr< Component > GetComponent( const Entity& entity, const std::string& type );
 };

@@ -28,9 +28,9 @@ void TriggerComponent::Init()
 	}
 }
 
-TriggerComponent* TriggerComponent::Get( const Entity& entity )
+std::shared_ptr< TriggerComponent > TriggerComponent::Get( const Entity& entity )
 {
-	return dynamic_cast< TriggerComponent* >( GetComponent( entity, "trigger" ) );
+	return std::dynamic_pointer_cast< TriggerComponent >( GetComponent( entity, "trigger" ) );
 }
 
 const std::string& TriggerComponent::GetType() const

@@ -17,7 +17,7 @@ namespace sf
 class CollisionMapComponent : public Component
 {
 public:
-	static CollisionMapComponent * Get( const Entity& entity );
+	static std::shared_ptr< CollisionMapComponent > Get( const Entity& entity );
 
 	/// Image: White = Nonsolid, Black = Solid
 	CollisionMapComponent( Entity& owner, Physics& physics, const sf::Image& image );
@@ -43,7 +43,7 @@ private:
 	}
 
 	Physics& m_physics;
-	const PositionComponent *m_position{ nullptr };
+	std::shared_ptr< const PositionComponent > m_position{ nullptr };
 	const sf::Vector2u m_size;
 	std::vector< bool > m_pixmap;
 };
