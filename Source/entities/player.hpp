@@ -10,6 +10,7 @@ class Texture;
 class SpriteGroup;
 class GameplaySettings;
 class Physics;
+class PositionComponent;
 
 class Player : public Entity
 {
@@ -19,4 +20,9 @@ public:
 	Player( const Player& ) = delete;
 	Player( Player&& ) = delete;
 	Player& operator=( const Player& ) = delete;
+
+	const sf::Vector2i& GetPosition() const;
+
+private:
+	std::shared_ptr< PositionComponent > m_position;
 };

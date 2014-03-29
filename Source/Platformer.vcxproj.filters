@@ -93,6 +93,12 @@
     <ClCompile Include="entities\player.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="components\gravity.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\moveIntent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -160,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="entities\player.hpp">
       <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="components\moveIntent.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\gravity.hpp">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

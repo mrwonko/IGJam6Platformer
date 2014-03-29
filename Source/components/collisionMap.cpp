@@ -11,6 +11,9 @@ CollisionMapComponent::CollisionMapComponent( Entity& owner, Physics& physics, c
 , m_pixmap( m_size.x * m_size.y, PixelType::Air )
 {
 	// if this is slow consider iterating through image.getAllPixels()
+	// profiler says: ignore getPixel, GetMatchingPixelType() is what takes most of the time!
+	// TODO: Parallellize this? (Is the overhead worth it? Should Tile-loading be parallellized instead?)
+	// Actually, that's just debug checks. Release build loads much faster.
 	for( unsigned int y = 0; y < image.getSize().y; ++y )
 	{
 		for( unsigned int x = 0; x < image.getSize().x; ++x )
