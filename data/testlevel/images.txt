@@ -1,1 +1,1 @@
-255 255 0 sun.png
+255 255 0 blinker.png

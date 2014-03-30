@@ -1,24 +1,28 @@
 #include "sprite.hpp"
 #include "position.hpp"
 #include "../entity.hpp"
-#include "../texture.hpp"
 #include "../spriteGroup.hpp"
+#include "../time.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
+
+#include <cassert>
 
 SpriteComponent::SpriteComponent( Entity& owner, std::shared_ptr< const Texture > texture, SpriteGroup& group )
 : Component( owner )
 , m_sprite( texture->GetTexture() )
 , m_texture( texture )
 , m_group( group )
+, m_animationTimerCallback( [ this ]( const sf::Time& delta ){ UpdateAnimation( delta ); } )
 {
-	// TODO: Animations (register frame callback)
+	SetAnimation( "idle" );
+	Time::RegisterCallback( m_animationTimerCallback );
 }
 
 SpriteComponent::~SpriteComponent( )
 {
 	m_group.UnregisterSprite( *this );
-	// TODO: Animations (unregister frame callback)
+	Time::UnregisterCallback( m_animationTimerCallback );
 }
 
 void SpriteComponent::Init()
@@ -49,4 +53,68 @@ const std::string& SpriteComponent::GetType( ) const
 {
 	static std::string type( "sprite" );
 	return type;
+}
+
+
+void SpriteComponent::SetAnimation( const std::string& name, const std::string& fallback )
+{
+	if( m_curAnimationName == name )
+	{
+		return;
+	}
+	std::string newAnim = name;
+	auto p = m_texture->GetAnimation( name );
+	if( !p.second && fallback != name )
+	{
+		p = m_texture->GetAnimation( fallback );
+		newAnim = fallback;
+	}
+	if( !p.second && fallback != "idle" )
+	{
+		p = m_texture->GetAnimation( "idle" );
+		newAnim = "idle";
+	}
+	if( newAnim == m_curAnimationName )
+	{
+		return;
+	}
+	m_curAnimationName = newAnim;
+	m_curAnimation = p.first;
+	m_curFrame = m_curAnimation.startFrame;
+	m_sprite.setTextureRect( m_texture->GetFrameRect( m_curFrame ) );
+}
+
+void SpriteComponent::UpdateAnimation( const sf::Time& delta )
+{
+	m_frameTime += delta;
+	assert( m_curAnimation.frameTime > sf::milliseconds( 0 ) );
+	while( m_frameTime >= m_curAnimation.frameTime )
+	{
+		// On the last frame?
+		if( m_curFrame + 1 == m_curAnimation.startFrame + m_curAnimation.length )
+		{
+			bool justEnded = false;
+			if( m_loopAnimation )
+			{
+				m_curFrame = m_curAnimation.startFrame;
+				m_frameTime -= m_curAnimation.frameTime;
+				m_sprite.setTextureRect( m_texture->GetFrameRect( m_curFrame ) );
+				justEnded = true;
+			}
+			else
+			{
+				justEnded = m_frameTime - delta < m_curAnimation.frameTime;
+			}
+			if( justEnded && m_animationOverCallback )
+			{
+				m_animationOverCallback( *this );
+			}
+		}
+		else
+		{
+			++m_curFrame;
+			m_frameTime -= m_curAnimation.frameTime;
+			m_sprite.setTextureRect( m_texture->GetFrameRect( m_curFrame ) );
+		}
+	}
 }

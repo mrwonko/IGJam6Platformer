@@ -5,10 +5,9 @@
 
 #include <cassert>
 
-TriggerComponent::TriggerComponent( Entity& owner, Physics& physics, const Callback& onEnter )
+TriggerComponent::TriggerComponent( Entity& owner, Physics& physics )
 : Component( owner )
 , m_physics( physics )
-, m_onEnter( onEnter )
 , m_rect( nullptr )
 {
 }
@@ -41,7 +40,7 @@ const std::string& TriggerComponent::GetType() const
 
 void TriggerComponent::OnEnter( Entity& other ) const
 {
-	m_onEnter( other );
+	if( m_onEnter ) m_onEnter( other );
 }
 
 sf::IntRect TriggerComponent::GetGlobalRect() const

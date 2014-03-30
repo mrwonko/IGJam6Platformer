@@ -1,0 +1,4 @@
+32 32
+closed 0 1 1
+open 1 4 2
+opened 5 2 1

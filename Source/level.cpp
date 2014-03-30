@@ -1,4 +1,5 @@
 #include "level.hpp"
+#include "levelManager.hpp"
 #include "vector2Comparator.hpp"
 #include "debug.hpp"
 #include "textureManager.hpp"
@@ -6,6 +7,7 @@
 #include "entities/tile.hpp"
 #include "entities/player.hpp"
 #include "entities/staticSprite.hpp"
+#include "entities/exit.hpp"
 
 #include <fstream>
 #include <set>
@@ -14,10 +16,13 @@
 #include <cctype>
 
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/View.hpp>
 
-Level::Level( const std::string& levelpath, TextureManager& textureManager )
+Level::Level( const std::string& levelpath, LevelManager& levelManager )
 : m_gameplaySettings( levelpath )
-, m_textureManager( textureManager )
+, m_textureManager( levelManager.GetTextureManager() )
+, m_levelManager( levelManager )
 {
 	EntityDefinitions entityDefinitions( LoadEntities( levelpath ) );
 	ImageDefinitions imageDefinitions( LoadImages( levelpath ) );
@@ -34,10 +39,36 @@ Level::~Level()
 
 void Level::DrawTo( sf::RenderTarget& target )
 {
+	if( !m_player )
+	{
+		Debug::Warning( "Drawing to Level without player!" );
+		return;
+	}
+
+	const float aspect = float( target.getSize().y ) / float( target.getSize().x );
+	target.setView( sf::View(
+		m_player->GetCenter(),
+		sf::Vector2f( float( m_gameplaySettings.screenWidth ), m_gameplaySettings.screenWidth * aspect )
+		) );
+
 	m_background.DrawAll( target );
 	m_images.DrawAll( target );
 	m_entitySprites.DrawAll( target );
 	m_playerSprite.DrawAll( target );
+
+	// HACK: this doesn't quite belong here, but I can't delete the level in the middle of the update cycle without invalidating iterators.
+	if( m_delayedRestart )
+	{
+		m_delayedRestart = false;
+		m_levelManager.RestartLevel();
+		return;
+	}
+	if( m_delayedProgress )
+	{
+		m_delayedProgress = false;
+		m_levelManager.NextLevel();
+		return;
+	}
 }
 
 void Level::LoadTiles( const std::string& levelpath, const ImageDefinitions& imageDefinitions, const EntityDefinitions& entityDefinitions )
@@ -168,32 +199,52 @@ void Level::LoadTileEntities( const std::string& levelpath, const sf::Vector2i& 
 				switch( def.type )
 				{
 				case EntityType::Collectible:
-					// TODO
-					break;
-				case EntityType::Enemy:
-					// TODO
-					break;
-				case EntityType::Exit:
-					// TODO
-					break;
-				case EntityType::Player:
-					if( m_player )
 					{
-						Debug::Error( "Multiple players in ", levelpath, "!" );
+						// TODO
+						break;
 					}
-					m_player = std::unique_ptr< Player >( new Player(
-						std::move( globalPosition ),
-						def.rect,
-						def.texture,
-						m_playerSprite,
-						m_physics,
-						m_gameplaySettings,
-						[ this ](){ } // TODO: Exit Level!
+				case EntityType::Enemy:
+					{
+						// TODO
+						break;
+					}
+				case EntityType::Exit:
+					{
+						std::unique_ptr< Exit > exit( new Exit(
+							std::move( globalPosition ),
+							def.rect,
+							def.texture,
+							m_entitySprites,
+							m_physics
+							) );
+						exit->SetOnExitCallback( [ this ](){ OnExitReached(); } );
+						// TODO: Open exit(s) once all collectibles are collected
+						exit->Open();
+						m_entities.AddEntity( std::move( exit ) );
+						break;
+					}
+				case EntityType::Player:
+					{
+						if( m_player )
+						{
+							Debug::Error( "Multiple players in ", levelpath, "!" );
+						}
+						m_player = std::unique_ptr< Player >( new Player(
+							std::move( globalPosition ),
+							def.rect,
+							def.texture,
+							m_playerSprite,
+							m_physics,
+							m_gameplaySettings,
+							[ this ](){ OnPlayerKilled(); }
 						) );
-					break;
+						break;
+					}
 				default:
-					Debug::Error( "Internal Error, invalid entity type?" );
-					break;
+					{
+						Debug::Error( "Internal Error, invalid entity type?" );
+						break;
+					}
 				}
 			}
 		}
@@ -367,4 +418,24 @@ Level::ImageDefinitions Level::LoadImages( const std::string& levelpath )
 	}
 
 	return definitions;
+}
+
+void Level::SetPlayerIntent( const MoveIntentComponent::Intent& intent )
+{
+	if( m_player )
+	{
+		auto intComp = MoveIntentComponent::Get( *m_player );
+		assert( intComp );
+		intComp->SetIntent( intent );
+	}
+}
+
+void Level::OnPlayerKilled()
+{
+	m_delayedRestart = true;
+}
+
+void Level::OnExitReached()
+{
+	m_delayedProgress = true;
 }

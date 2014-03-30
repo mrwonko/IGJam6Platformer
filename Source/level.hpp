@@ -4,12 +4,14 @@
 #include "entityManager.hpp"
 #include "physics.hpp"
 #include "gameplaySettings.hpp"
+#include "components/moveIntent.hpp"
 
 #include <string>
 #include <memory>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
+class LevelManager;
 class TextureManager;
 class Texture;
 class Player;
@@ -22,13 +24,15 @@ namespace sf
 class Level
 {
 public:
-	Level( const std::string& levelpath, TextureManager& textureManager );
+	Level( const std::string& levelpath, LevelManager& levelManager );
 	~Level();
 	Level( const Level& ) = delete;
 	Level( Level&& ) = delete;
 	Level& operator=( const Level& ) = delete;
 
 	void DrawTo( sf::RenderTarget& target );
+
+	void SetPlayerIntent( const MoveIntentComponent::Intent& intent );
 private:
 	enum class EntityType
 	{
@@ -57,8 +61,12 @@ private:
 	void LoadTileImages( const std::string& levelpath, const sf::Vector2i& position, const ImageDefinitions& imageDefinitions );
 	void LoadTileEntities( const std::string& levelpath, const sf::Vector2i& position, const EntityDefinitions& entityDefinitions );
 
+	void OnPlayerKilled();
+	void OnExitReached();
+
 	GameplaySettings m_gameplaySettings;
 	TextureManager& m_textureManager;
+	LevelManager& m_levelManager;
 
 	// Mind the order! Entities must be destroyed before managers (Physics, SpriteGroup) since they'll unregister on destruction!
 
@@ -73,4 +81,6 @@ private:
 	std::unique_ptr< Player > m_player{ nullptr };
 	EntityManager m_entities;
 
+	bool m_delayedRestart{ false };
+	bool m_delayedProgress{ false };
 };

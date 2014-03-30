@@ -47,6 +47,10 @@ void GameplaySettings::ParseLine( const std::string& line )
 	{
 		ss >> playerSpeed;
 	}
+	else if( type == "playeraccel" )
+	{
+		ss >> playerAccel;
+	}
 	else if( type == "playeroffsetx" )
 	{
 		ss >> playerOffset.x;
@@ -83,7 +87,8 @@ MoveIntentComponent::Parameters GameplaySettings::GetMoveIntentParameters() cons
 	{
 		playerSpeed,
 		// jump impulse, arrived at via math
-		int( std::round( std::sqrt( float( 2 * gravity * jumpHeight ) ) ) )
+		int( std::round( std::sqrt( float( 2 * gravity * jumpHeight ) ) ) ),
+		playerAccel
 	};
 	return parameters;
 }

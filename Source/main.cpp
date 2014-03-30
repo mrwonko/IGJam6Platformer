@@ -1,20 +1,16 @@
 #include <iostream>
 #include <string>
-
-#ifdef _WIN32
-#	define WIN32_LEAN_AND_MEAN
-#	include <Windows.h>
-#endif
+#include <fstream>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Sleep.hpp>
 
-#include "level.hpp"
-#include "textureManager.hpp"
+#include "levelManager.hpp"
 #include "time.hpp"
 #include "debug.hpp"
 
@@ -24,23 +20,24 @@ int main( int argc, char** argv )
 {
 	try
 	{
-		sf::Time totalElapsed;
-		unsigned int counter;
-		std::function< void( const sf::Time& ) > timeTest = [ &totalElapsed, &counter ]( const sf::Time& delta )
+		bool fullscreen = false;
+		unsigned int width = 800;
+		unsigned int height = 600;
 		{
-			totalElapsed += delta;
-			++counter;
-			if( counter % 50 == 0 )
-			{
-				std::cout << totalElapsed.asSeconds( ) << " seconds elapsed" << std::endl;
-			}
-		};
-		Time::RegisterCallback( timeTest );
+			std::ifstream resConfig( "resolution.txt" );
+			resConfig >> width;
+			resConfig >> height;
+			resConfig >> fullscreen;
+		}
 
-		sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
+		sf::Uint32 windowStyle = sf::Style::Close | sf::Style::Titlebar;
+		if( fullscreen ) windowStyle |= sf::Style::Fullscreen;
+		sf::RenderWindow window( sf::VideoMode( width, height ), "Ridiculous Platformer", windowStyle );
+		window.setMouseCursorVisible( false );
+		window.clear();
+		window.display();
 
-		TextureManager textureManager;
-		Level testlevel( "../data/testlevel", textureManager );
+		LevelManager levelManager( "../data/" );
 
 		sf::Clock clock;
 		sf::Time lastFrameTime;
@@ -55,6 +52,10 @@ int main( int argc, char** argv )
 				{
 					window.close();
 				}
+				else if( ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::F1 )
+				{
+					levelManager.NextLevel();
+				}
 			}
 
 			// Update game at fixed framerate
@@ -62,17 +63,31 @@ int main( int argc, char** argv )
 			bool updated = false;
 			while( elapsedTime > s_frameTime )
 			{
+
 				Time::OnTimePassed( s_frameTime );
 				elapsedTime -= s_frameTime;
 				lastFrameTime += s_frameTime;
 				updated = true;
+
+				MoveIntentComponent::Intent intent;
+				intent.jump = 
+					sf::Keyboard::isKeyPressed( sf::Keyboard::Space )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Up )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::W );
+				intent.left =
+					sf::Keyboard::isKeyPressed( sf::Keyboard::A )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Left );
+				intent.right =
+					sf::Keyboard::isKeyPressed( sf::Keyboard::D )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Right );
+				levelManager.SetPlayerIntent( intent );
 			}
 
 			// Draw
 			if( updated )
 			{
 				window.clear( );
-				testlevel.DrawTo( window );
+				levelManager.DrawTo( window );
 				window.display( );
 			}
 			else
@@ -85,5 +100,6 @@ int main( int argc, char** argv )
 	// "normal" runtime error exit (usually broken assets)
 	catch( Debug::FatalError )
 	{
+		return 1;
 	}
 }

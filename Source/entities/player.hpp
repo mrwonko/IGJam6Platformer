@@ -25,7 +25,10 @@ public:
 
 	const sf::Vector2i& GetPosition() const;
 
+	sf::Vector2f GetCenter() const;
+
 private:
 	std::shared_ptr< PositionComponent > m_position;
 	std::shared_ptr< MoveIntentComponent > m_moveIntent;
+	const sf::Vector2u m_halfSize;
 };

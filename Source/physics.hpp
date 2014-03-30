@@ -28,6 +28,8 @@ public:
 
 	bool OnFloor( const sf::IntRect& rect ) const;
 
+	bool InSolid( const sf::IntRect& rect ) const;
+
 	enum class MoveResult : char
 	{
 		Success,

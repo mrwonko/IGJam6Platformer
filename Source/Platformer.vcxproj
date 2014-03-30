@@ -51,6 +51,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,6 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -84,13 +87,15 @@
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="components\trigger.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="entities\exit.cpp" />
     <ClCompile Include="entities\player.cpp" />
     <ClCompile Include="entities\staticSprite.cpp" />
     <ClCompile Include="entities\tile.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="entityManager.cpp" />
     <ClCompile Include="gameplaySettings.cpp" />
-    <ClCompile Include="image.cpp" />
+    <ClCompile Include="levelManager.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
@@ -111,6 +116,7 @@
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="components\trigger.hpp" />
     <ClInclude Include="debug.hpp" />
+    <ClInclude Include="entities\exit.hpp" />
     <ClInclude Include="entities\player.hpp" />
     <ClInclude Include="entities\staticSprite.hpp" />
     <ClInclude Include="entities\tile.hpp" />
@@ -118,6 +124,7 @@
     <ClInclude Include="entityManager.hpp" />
     <ClInclude Include="colorConversion.hpp" />
     <ClInclude Include="gameplaySettings.hpp" />
+    <ClInclude Include="levelManager.hpp" />
     <ClInclude Include="physics.hpp" />
     <ClInclude Include="spriteGroup.hpp" />
     <ClInclude Include="texture.hpp" />

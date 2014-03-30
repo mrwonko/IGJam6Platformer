@@ -38,6 +38,8 @@ public:
 
 	void Init();
 
+	void SetMaxStep( int maxStep ) { m_maxStep = maxStep;  }
+
 	sf::IntRect GetGlobalRect() const;
 	const sf::Vector2i& GetPosition() const;
 	sf::Vector2i& GetPosition();
@@ -60,4 +62,5 @@ private:
 	std::shared_ptr< MoveIntentComponent > m_moveIntent;
 	sf::Vector2i m_velocity;
 	std::function< void( Entity& ) > m_onCollideCallback;
+	int m_maxStep{ 0 };
 };
