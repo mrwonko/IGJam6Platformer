@@ -4,6 +4,7 @@
 #include "entityManager.hpp"
 #include "physics.hpp"
 #include "gameplaySettings.hpp"
+#include "components/moveIntent.hpp"
 
 #include <string>
 #include <memory>
@@ -29,6 +30,8 @@ public:
 	Level& operator=( const Level& ) = delete;
 
 	void DrawTo( sf::RenderTarget& target );
+
+	void SetPlayerIntent( const MoveIntentComponent::Intent& intent );
 private:
 	enum class EntityType
 	{

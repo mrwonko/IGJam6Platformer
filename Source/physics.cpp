@@ -64,19 +64,40 @@ void Physics::RegisterCollisionMap( CollisionMapComponent& collisionMap )
 	{
 		Debug::Error( "Tile size is not uniform!" );
 	}
+	sf::Vector2i position = collisionMap.GetPosition();
+	position.x /= collisionMap.GetSize().x;
+	position.y /= collisionMap.GetSize().y;
 	// see if it's already registered
-	if( !m_collisionMaps.insert( std::make_pair( collisionMap.GetPosition(), &collisionMap ) ).second )
+	if( !m_collisionMaps.insert( std::make_pair( position, &collisionMap ) ).second )
 	{
-		Debug::Warning( "Trying to register multiple CollisionMaps at ", collisionMap.GetPosition().x, ", ", collisionMap.GetPosition().y, "!" );
+		Debug::Warning( "Trying to register multiple CollisionMaps at ", position.x, ", ", position.y, "!" );
 	}
 }
 
 void Physics::UnregisterCollisionMap( CollisionMapComponent& collisionMap )
 {
-	if( m_collisionMaps.erase( collisionMap.GetPosition() ) == 0 )
+	sf::Vector2i position = collisionMap.GetPosition();
+	position.x /= collisionMap.GetSize().x;
+	position.y /= collisionMap.GetSize().y;
+	if( m_collisionMaps.erase( position ) == 0 )
 	{
-		Debug::Warning( "Trying to unregister unregistered CollisionMap at ", collisionMap.GetPosition().x, ", ", collisionMap.GetPosition().y, "!" );
+		Debug::Warning( "Trying to unregister unregistered CollisionMap at ", position.x, ", ", position.y, "!" );
 	}
+}
+
+bool Physics::InSolid( const sf::IntRect& rect ) const
+{
+	for( int x = rect.left; x < rect.left + rect.width; ++x )
+	{
+		for( int y = rect.top; y < rect.top + rect.height; ++y )
+		{
+			if( GetPixelType( x, y ) != PixelType::Air )
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 bool Physics::OnFloor( const sf::IntRect& rect ) const
@@ -136,12 +157,17 @@ void Physics::Update( const sf::Time& delta )
 	}
 }
 
-void operator|=( Physics::MoveResult& lhs, Physics::MoveResult rhs )
+static Physics::MoveResult operator~( Physics::MoveResult lhs )
+{
+	return Physics::MoveResult( ~int( lhs ) & 7 );
+}
+
+static void operator|=( Physics::MoveResult& lhs, Physics::MoveResult rhs )
 {
 	lhs = Physics::MoveResult( int( lhs ) | int( rhs ) );
 }
 
-int operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
+static int operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
 {
 	return int( lhs ) & int( rhs );
 }
@@ -170,11 +196,12 @@ void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 	for( int major = 0; major != majorComponent; major += majorSign )
 	{
 		sf::Vector2i offset( majorAxis );
-		const int totalMinorOffset = minorComponent * major / majorComponent;
+		const int totalMinorOffset = minorComponent * (major + majorSign) / majorComponent;
 		bool stop = false;
 		if( totalMinorOffset != prevTotalMinorOffset )
 		{
 			assert( std::abs( totalMinorOffset - prevTotalMinorOffset ) == 1 );
+			prevTotalMinorOffset = totalMinorOffset;
 			offset += minorAxis;
 		}
 		// One component may have been changed to 0 due to collision
@@ -208,11 +235,14 @@ void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 		}
 		movable->GetPosition() = movable->GetPosition() + offset;
 	}
+
+	assert( !InSolid( movable->GetGlobalRect() ) );
+
 	// Fix for ending up just above the floor with huge downward velocity, leading to small jumps
-	if( movable->OnFloor() )
+	if( movable->OnFloor() && movable->GetVelocity().y > 0 )
 	{
 		// FIXME: delays getting killed, may prevent it?
-		movable->GetVelocity().y = std::min( 0, movable->GetVelocity().y );
+		movable->GetVelocity().y = 0;
 	}
 }
 
@@ -223,8 +253,8 @@ Physics::MoveResult Physics::IsMovePossible( const sf::IntRect& rect, const sf::
 
 	MoveResult result = MoveResult::Success;
 
-	const int x = direction.x > 0 ? rect.left + rect.width - 1 : rect.left;
-	const int y = direction.y > 0 ? rect.top + rect.height - 1 : rect.top;
+	const int x = ( direction.x > 0 ? rect.left + rect.width - 1 : rect.left ) + direction.x;
+	const int y = ( direction.y > 0 ? rect.top + rect.height - 1 : rect.top ) + direction.y;
 
 	// Check horizontally
 	if( direction.x != 0 )
@@ -282,7 +312,7 @@ Physics::MoveResult Physics::IsMovePossible( const sf::IntRect& rect, const sf::
 		PixelType type = GetPixelType( x, y );
 		if( type != PixelType::Air )
 		{
-			result |= MoveResult::BlockedVertically;
+			result |= MoveResult::BlockedHorizontally;
 			if( type == PixelType::Killer )
 			{
 				result |= MoveResult::Killed;

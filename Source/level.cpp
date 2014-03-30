@@ -368,3 +368,13 @@ Level::ImageDefinitions Level::LoadImages( const std::string& levelpath )
 
 	return definitions;
 }
+
+void Level::SetPlayerIntent( const MoveIntentComponent::Intent& intent )
+{
+	if( m_player )
+	{
+		auto intComp = MoveIntentComponent::Get( *m_player );
+		assert( intComp );
+		intComp->SetIntent( intent );
+	}
+}

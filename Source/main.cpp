@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Sleep.hpp>
@@ -24,19 +25,6 @@ int main( int argc, char** argv )
 {
 	try
 	{
-		sf::Time totalElapsed;
-		unsigned int counter;
-		std::function< void( const sf::Time& ) > timeTest = [ &totalElapsed, &counter ]( const sf::Time& delta )
-		{
-			totalElapsed += delta;
-			++counter;
-			if( counter % 50 == 0 )
-			{
-				std::cout << totalElapsed.asSeconds( ) << " seconds elapsed" << std::endl;
-			}
-		};
-		Time::RegisterCallback( timeTest );
-
 		sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
 
 		TextureManager textureManager;
@@ -62,10 +50,24 @@ int main( int argc, char** argv )
 			bool updated = false;
 			while( elapsedTime > s_frameTime )
 			{
+
 				Time::OnTimePassed( s_frameTime );
 				elapsedTime -= s_frameTime;
 				lastFrameTime += s_frameTime;
 				updated = true;
+
+				MoveIntentComponent::Intent intent;
+				intent.jump = 
+					sf::Keyboard::isKeyPressed( sf::Keyboard::Space )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Up )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::W );
+				intent.left =
+					sf::Keyboard::isKeyPressed( sf::Keyboard::A )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Left );
+				intent.right =
+					sf::Keyboard::isKeyPressed( sf::Keyboard::D )
+					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Right );
+				testlevel.SetPlayerIntent( intent );
 			}
 
 			// Draw

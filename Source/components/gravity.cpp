@@ -21,8 +21,9 @@ std::shared_ptr< GravityComponent > GravityComponent::Get( const Entity& entity 
 
 sf::Vector2i GravityComponent::Apply( const sf::Vector2i& velocity, const sf::Time& delta )
 {
+	int diff = int( std::round( m_gravity * delta.asSeconds() ) );
 	return sf::Vector2i(
 		velocity.x,
-		velocity.y + int( std::round( m_gravity * delta.asSeconds() ) )
+		velocity.y + diff
 		);
 }

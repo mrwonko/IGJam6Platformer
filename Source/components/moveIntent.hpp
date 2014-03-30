@@ -21,6 +21,14 @@ public:
 	{
 		int moveSpeed;
 		int jumpImpulse;
+		int acceleration;
+	};
+
+	struct Intent
+	{
+		bool right{ false };
+		bool left{ false };
+		bool jump{ false };
 	};
 
 	MoveIntentComponent( Entity& owner, Parameters&& parameters );
@@ -32,9 +40,12 @@ public:
 
 	static std::shared_ptr< MoveIntentComponent > Get( const Entity& entity );
 
+	void SetIntent( const Intent& intent ) { m_intent = intent;  }
+
 	sf::Vector2i Apply( const sf::Vector2i& velocity, const sf::Time& delta );
 
 private:
 	const Parameters m_parameters;
+	Intent m_intent;
 	std::weak_ptr< MovableComponent > m_movable;
 };
