@@ -1,0 +1,6 @@
+100 100
+idle 0 6 2
+walkright 7 6 2
+walkleft 13 6 2
+jumpup 19 3 1
+death 22 4 2
