@@ -1,1 +1,2 @@
-0 255 0 player
+0 0 255 player
+0 255 0 exit 8 8 16 16

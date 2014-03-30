@@ -87,6 +87,7 @@
     <ClCompile Include="components\sprite.cpp" />
     <ClCompile Include="components\trigger.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="entities\exit.cpp" />
     <ClCompile Include="entities\player.cpp" />
     <ClCompile Include="entities\staticSprite.cpp" />
     <ClCompile Include="entities\tile.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Components\sprite.hpp" />
     <ClInclude Include="components\trigger.hpp" />
     <ClInclude Include="debug.hpp" />
+    <ClInclude Include="entities\exit.hpp" />
     <ClInclude Include="entities\player.hpp" />
     <ClInclude Include="entities\staticSprite.hpp" />
     <ClInclude Include="entities\tile.hpp" />

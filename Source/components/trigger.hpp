@@ -13,8 +13,10 @@ class TriggerComponent : public Component
 public:
 	typedef std::function< void( Entity& ) > Callback;
 
-	TriggerComponent( Entity& owner, Physics& physics, const Callback& onEnter );
+	TriggerComponent( Entity& owner, Physics& physics);
 	~TriggerComponent();
+
+	void SetOnEnterCallback( const Callback& onEnter ) { m_onEnter = onEnter; }
 
 	void Init();
 

@@ -60,6 +60,9 @@ private:
 	void LoadTileImages( const std::string& levelpath, const sf::Vector2i& position, const ImageDefinitions& imageDefinitions );
 	void LoadTileEntities( const std::string& levelpath, const sf::Vector2i& position, const EntityDefinitions& entityDefinitions );
 
+	void OnPlayerKilled();
+	void OnExitReached();
+
 	GameplaySettings m_gameplaySettings;
 	TextureManager& m_textureManager;
 
