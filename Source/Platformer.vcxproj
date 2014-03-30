@@ -93,7 +93,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="entityManager.cpp" />
     <ClCompile Include="gameplaySettings.cpp" />
-    <ClCompile Include="image.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />

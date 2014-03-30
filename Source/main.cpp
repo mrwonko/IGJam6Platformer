@@ -1,10 +1,6 @@
 #include <iostream>
 #include <string>
-
-#ifdef _WIN32
-#	define WIN32_LEAN_AND_MEAN
-#	include <Windows.h>
-#endif
+#include <fstream>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -25,7 +21,20 @@ int main( int argc, char** argv )
 {
 	try
 	{
-		sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Ridiculous Platformer", sf::Style::Close | sf::Style::Titlebar );
+		bool fullscreen = false;
+		unsigned int width = 800;
+		unsigned int height = 600;
+		{
+			std::ifstream resConfig( "resolution.txt" );
+			resConfig >> width;
+			resConfig >> height;
+			resConfig >> fullscreen;
+		}
+
+		sf::Uint32 windowStyle = sf::Style::Close | sf::Style::Titlebar;
+		if( fullscreen ) windowStyle |= sf::Style::Fullscreen;
+		sf::RenderWindow window( sf::VideoMode( width, height ), "Ridiculous Platformer", windowStyle );
+		window.setMouseCursorVisible( false );
 
 		TextureManager textureManager;
 		Level testlevel( "../data/testlevel", textureManager );

@@ -1,19 +1,19 @@
 #pragma once
 
 #include "../component.hpp"
+#include "../texture.hpp"
 #include <memory>
 #include <string>
 #include <functional>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Time.hpp>
 
-class Texture;
 class PositionComponent;
 class SpriteGroup;
 
 namespace sf
 {
 	class RenderTarget;
-	class Time;
 }
 
 class SpriteComponent : public Component
@@ -31,13 +31,26 @@ public:
 
 	void Init();
 
-	// TODO: Animations
-	// void SetAnimation( const std::string& name );
-	// void Update( const sf::Time& delta );
+	typedef std::function< void( SpriteComponent& ) > AnimationOverCallback;
+
+	void SetAnimation( const std::string& name );
+	const std::string& GetAnimation() const { return m_curAnimationName;  }
+	void LoopAnimation( bool loop ) { m_loopAnimation = loop; }
+	void SetAnimationOverCallback( AnimationOverCallback callback ) { m_animationOverCallback = callback; }
 
 private:
+	void UpdateAnimation( const sf::Time& delta );
+
 	sf::Sprite m_sprite;
 	std::shared_ptr< const Texture > m_texture;
 	std::shared_ptr< PositionComponent > m_position{ nullptr };
 	SpriteGroup& m_group;
+
+	bool m_loopAnimation{ true };
+	unsigned int m_curFrame{ 0 };
+	std::string m_curAnimationName;
+	Texture::Animation m_curAnimation;
+	sf::Time m_frameTime;
+	std::function< void( const sf::Time& ) > m_animationTimerCallback;
+	AnimationOverCallback m_animationOverCallback;
 };

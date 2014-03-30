@@ -39,6 +39,8 @@ Player::Player( sf::Vector2i&& position, const sf::IntRect& rect, std::shared_pt
 
 	AddComponent( std::make_shared< GravityComponent >( *this, settings.gravity ) );
 
+	AddGroup( Group::Player );
+
 	InitComponents();
 }
 
