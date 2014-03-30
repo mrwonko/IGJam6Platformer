@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <SFML/System/Vector2.hpp>
 
 #include "../component.hpp"
@@ -9,6 +11,7 @@ namespace sf
 	class Time;
 }
 
+class MovableComponent;
 struct GameplaySettings;
 
 class MoveIntentComponent : public Component
@@ -23,6 +26,8 @@ public:
 	MoveIntentComponent( Entity& owner, Parameters&& parameters );
 	~MoveIntentComponent() = default;
 
+	void Init();
+
 	const std::string& GetType() const;
 
 	static std::shared_ptr< MoveIntentComponent > Get( const Entity& entity );
@@ -31,4 +36,5 @@ public:
 
 private:
 	const Parameters m_parameters;
+	std::weak_ptr< MovableComponent > m_movable;
 };

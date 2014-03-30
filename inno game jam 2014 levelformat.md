@@ -2,9 +2,12 @@
 
 1 Level = 1 Ordner. Inhalt beschreibt alles.
 
-x_y.png, x_y.collision.png, x_y.game.png und x_y.images.png beschreiben das Level
-player.png und player.png.animations.txt beschreiben den Spieler und seine Animationen
-exit.png (und ggf. exit.png.animations.txt) beschreibt den Ausgang
+*	''game.txt'' und ''images.txt'' beschreiben, wie die Spezialbilder zu interpretieren sind.
+*	''gameplay.txt'' definiert Spielrelevante Eintsellungen
+*	''x_y.png'', ''x_y.collision.png'', ''x_y.game.png'' und ''x_y.images.png'' beschreiben das Level
+*	''player.png'' und ''player.png.animations.txt'' beschreiben den Spieler und seine Animationen
+*	''exit.png'' (und ggf. ''exit.png.animations.txt'') definiert Aussehen des Ausgangs
+*	''collectible.png'' (und ggf. ''collectible.txt.animations.txt'') beschreibt Aussehen der zu sammelnden Objekte (optional; nur nötig, wenn verwendet)
 
 ## *.png.animations.txt ##
 
@@ -86,12 +89,12 @@ z.B.
 
 Enthält Gameplay Informationen, im Format "Name Wert", Werte sind positive Zahlen. Es gibt folgende Namen (Groß-/Kleinschreibung egal):
 
-* ScreenWidth: Breite des sichtbaren Ausschnitts in Pixeln
-* PlayerHeight: Kollisions-Höhe des Spielers in Pixeln
-* PlayerWidth: Kollisions-Breite des Spielers in Pixeln
-* PlayerOffsetX: Abstand des Kollisionsrechtecks vom linken Rand des Bilds
-* PlayerOffsetY: Abstand des Kollisionsrechtecks vom rechten Rand des Bilds
-* PlayerSpeed: Geschwindigkeit des Spielers in Pixeln pro Sekunde
-* JumpHeight: Sprunghöhe in Pixeln (???)
-* StepHeight: Stufen dieser Höhe können ohne Sprung erklommen werden.
-* Gravity: Erdanziehungskraft in Pixeln pro Quadratsekunde
+*	ScreenWidth: Breite des sichtbaren Ausschnitts in Pixeln
+*	PlayerHeight: Kollisions-Höhe des Spielers in Pixeln
+*	PlayerWidth: Kollisions-Breite des Spielers in Pixeln
+*	PlayerOffsetX: Abstand des Kollisionsrechtecks vom linken Rand des Bilds
+*	PlayerOffsetY: Abstand des Kollisionsrechtecks vom rechten Rand des Bilds
+*	PlayerSpeed: Geschwindigkeit des Spielers in Pixeln pro Sekunde
+*	JumpHeight: Sprunghöhe in Pixeln (???)
+*	StepHeight: Stufen dieser Höhe können ohne Sprung erklommen werden.
+*	Gravity: Erdanziehungskraft in Pixeln pro Quadratsekunde

@@ -3,9 +3,14 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <stdexcept>
 
 namespace Debug
 {
+	struct FatalError : std::runtime_error
+	{
+		FatalError( const std::string& what ) : std::runtime_error( what ) {}
+	};
 
 	void Break();
 	

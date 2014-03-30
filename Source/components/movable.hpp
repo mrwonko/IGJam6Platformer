@@ -43,6 +43,7 @@ public:
 	sf::Vector2i& GetPosition();
 
 	const sf::Vector2i& GetVelocity() const { return m_velocity; }
+	sf::Vector2i& GetVelocity() { return m_velocity; }
 
 	bool OnFloor() const;
 
@@ -51,7 +52,6 @@ public:
 
 private:
 	void Update( const sf::Time& delta );
-	sf::Vector2i& GetVelocity( ) { return m_velocity; }
 
 	Physics& m_physics;
 	std::shared_ptr< PositionComponent > m_position;

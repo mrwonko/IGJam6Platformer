@@ -48,7 +48,7 @@ private:
 		Updates velocity in case the collisionmap is in the way.
 		Ignores collisions with other movables or triggers.
 	**/
-	void Move( MovableComponent* moveable );
+	void Move( MovableComponent* moveable, const sf::Time& delta );
 
 	MoveResult IsMovePossible( const sf::IntRect& rect, const sf::Vector2i direction );
 

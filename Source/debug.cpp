@@ -22,6 +22,6 @@ namespace Debug
 			MessageBox( NULL, message.c_str(), "Error!", MB_OK | MB_ICONERROR | MB_TASKMODAL );
 #		endif
 		Break();
-		throw std::runtime_error( message );
+		throw FatalError( message );
 	}
 }

@@ -132,7 +132,7 @@ void Physics::Update( const sf::Time& delta )
 	for( auto& movable : m_movables )
 	{
 		movable->Update( delta );
-		Move( movable );
+		Move( movable, delta );
 	}
 }
 
@@ -146,14 +146,14 @@ int operator&( Physics::MoveResult lhs, Physics::MoveResult rhs )
 	return int( lhs ) & int( rhs );
 }
 
-void Physics::Move( MovableComponent* movable )
+void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 {
 	// major axis is that with the bigger absolute velocity
 	bool xMajor = true;
-	int majorComponent = movable->GetVelocity().x;
-	int minorComponent = movable->GetVelocity().y;
-	sf::Vector2i majorAxis( majorComponent / std::abs( majorComponent ), 0 );
-	sf::Vector2i minorAxis( 0, minorComponent / std::abs( minorComponent ) );
+	int majorComponent = int( std::round( movable->GetVelocity().x * delta.asSeconds() ) );
+	int minorComponent = int( std::round( movable->GetVelocity().y * delta.asSeconds() ) );
+	sf::Vector2i majorAxis( majorComponent == 0 ? 0 : majorComponent / std::abs( majorComponent ), 0 );
+	sf::Vector2i minorAxis( 0, minorComponent == 0 ? 0 : minorComponent / std::abs( minorComponent ) );
 	if( std::abs( minorComponent ) > std::abs( majorComponent ) )
 	{
 		std::swap( minorComponent, majorComponent );
@@ -207,6 +207,12 @@ void Physics::Move( MovableComponent* movable )
 			if( healthComp ) healthComp->Kill();
 		}
 		movable->GetPosition() = movable->GetPosition() + offset;
+	}
+	// Fix for ending up just above the floor with huge downward velocity, leading to small jumps
+	if( movable->OnFloor() )
+	{
+		// FIXME: delays getting killed, may prevent it?
+		movable->GetVelocity().y = std::min( 0, movable->GetVelocity().y );
 	}
 }
 

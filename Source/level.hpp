@@ -12,6 +12,7 @@
 
 class TextureManager;
 class Texture;
+class Player;
 
 namespace sf
 {
@@ -22,7 +23,7 @@ class Level
 {
 public:
 	Level( const std::string& levelpath, TextureManager& textureManager );
-	~Level() = default;
+	~Level();
 	Level( const Level& ) = delete;
 	Level( Level&& ) = delete;
 	Level& operator=( const Level& ) = delete;
@@ -58,8 +59,18 @@ private:
 
 	GameplaySettings m_gameplaySettings;
 	TextureManager& m_textureManager;
+
 	// Mind the order! Entities must be destroyed before managers (Physics, SpriteGroup) since they'll unregister on destruction!
-	SpriteGroup m_allSprites;
+
+	// Managers
+	SpriteGroup m_background;
+	SpriteGroup m_images;
+	SpriteGroup m_entitySprites;
+	SpriteGroup m_playerSprite;
 	Physics m_physics;
+
+	// Entities
+	std::unique_ptr< Player > m_player{ nullptr };
 	EntityManager m_entities;
+
 };
