@@ -211,14 +211,42 @@ void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 		}
 		MoveResult result = IsMovePossible( movable->GetGlobalRect( ), offset );
 
-		// TODO: Steps?
 		if( result & MoveResult::BlockedHorizontally )
 		{
-			offset.x = 0;
-			majorAxis.x = 0;
-			minorAxis.x = 0;
-			movable->GetVelocity().x = 0;
-			stop |= movable->GetVelocity().y == 0;
+			// Steps. Only applicable if on the floor and there's possibly space above us.
+			const int killed = result & MoveResult::Killed;
+			const bool definitelyNoSpaceAbove = offset.y < 0 && ( result & MoveResult::BlockedVertically );
+			if( !killed && !definitelyNoSpaceAbove && movable->OnFloor() )
+			{
+				for( int ofsY = -1; ofsY >= -movable->m_maxStep; --ofsY )
+				{
+					// screw performance, this is already getting unreasonably complicated
+					// besides, this will probably hardly hurt anyway.
+
+					sf::IntRect rect( movable->GetGlobalRect() );
+					rect.top += ofsY;
+					rect.left += offset.x;
+					if( !InSolid( rect ) )
+					{
+						// see if we can get there
+						rect.left -= offset.x;
+						if( !InSolid( rect ) )
+						{
+							offset.y = ofsY;
+							result = MoveResult::Success;
+							break;
+						}
+					}
+				}
+			}
+			if( result & MoveResult::BlockedHorizontally )
+			{
+				offset.x = 0;
+				majorAxis.x = 0;
+				minorAxis.x = 0;
+				movable->GetVelocity().x = 0;
+				stop |= movable->GetVelocity().y == 0;
+			}
 		}
 		if( result & MoveResult::BlockedVertically )
 		{
@@ -234,6 +262,7 @@ void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 			if( healthComp ) healthComp->Kill();
 		}
 		movable->GetPosition() = movable->GetPosition() + offset;
+		if( stop ) break;
 	}
 
 	assert( !InSolid( movable->GetGlobalRect() ) );
@@ -241,7 +270,7 @@ void Physics::Move( MovableComponent* movable, const sf::Time& delta )
 	// Fix for ending up just above the floor with huge downward velocity, leading to small jumps
 	if( movable->OnFloor() && movable->GetVelocity().y > 0 )
 	{
-		// FIXME: delays getting killed, may prevent it?
+		// FIXME: possibly delays getting killed, may even prevent it?
 		movable->GetVelocity().y = 0;
 	}
 }
