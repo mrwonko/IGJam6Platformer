@@ -11,6 +11,7 @@
 Player::Player( sf::Vector2i&& position, const sf::IntRect& rect, std::shared_ptr< const Texture > texture, SpriteGroup& group, Physics& physics, const GameplaySettings& settings, std::function< void( ) > onPlayerKilled )
 : m_position( std::make_shared< PositionComponent >( *this, std::move( position ) ) )
 , m_moveIntent( std::make_shared< MoveIntentComponent >( *this, settings.GetMoveIntentParameters() ) )
+, m_halfSize( settings.playerOffset + ( sf::Vector2i( settings.playerSize.x, settings.playerSize.y ) / 2 ) )
 {
 	AddComponent( m_position );
 	AddComponent( m_moveIntent );
@@ -44,4 +45,12 @@ Player::Player( sf::Vector2i&& position, const sf::IntRect& rect, std::shared_pt
 const sf::Vector2i& Player::GetPosition() const
 {
 	return m_position->GetPosition();
+}
+
+sf::Vector2f Player::GetCenter() const
+{
+	return sf::Vector2f(
+		float( GetPosition().x ) + m_halfSize.x,
+		float( GetPosition().y ) + m_halfSize.y
+		);
 }

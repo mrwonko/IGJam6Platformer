@@ -1,4 +1,4 @@
-ScreenWidth		200	(Breite des sichtbaren Ausschnitts in Pixeln)
+ScreenWidth		320	(Breite des sichtbaren Ausschnitts in Pixeln)
 PlayerHeight	32	(Kollisions-Höhe des Spielers in Pixeln)
 PlayerWidth		16	(Kollisions-Breite des Spielers in Pixeln)
 PlayerOffsetX	4	(Abstand des Kollisionsrechtecks vom linken Rand des Bilds)

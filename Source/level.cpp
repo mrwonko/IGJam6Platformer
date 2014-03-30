@@ -14,6 +14,8 @@
 #include <cctype>
 
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/View.hpp>
 
 Level::Level( const std::string& levelpath, TextureManager& textureManager )
 : m_gameplaySettings( levelpath )
@@ -34,6 +36,18 @@ Level::~Level()
 
 void Level::DrawTo( sf::RenderTarget& target )
 {
+	if( !m_player )
+	{
+		Debug::Warning( "Drawing to Level without player!" );
+		return;
+	}
+
+	const float aspect = float( target.getSize().y ) / float( target.getSize().x );
+	target.setView( sf::View(
+		m_player->GetCenter(),
+		sf::Vector2f( float( m_gameplaySettings.screenWidth ), m_gameplaySettings.screenWidth * aspect )
+		) );
+
 	m_background.DrawAll( target );
 	m_images.DrawAll( target );
 	m_entitySprites.DrawAll( target );
