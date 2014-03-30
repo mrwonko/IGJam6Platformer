@@ -72,21 +72,21 @@ sf::IntRect Texture::GetFrameRect( unsigned int frame ) const
 		);
 }
 
-Texture::Animation Texture::GetAnimation( const std::string& name ) const
+std::pair< Texture::Animation, bool > Texture::GetAnimation( const std::string& name ) const
 {
 	auto it = m_animations.find( name );
 	if( it == m_animations.end() )
 	{
 		//Debug::Warning( "Image lacks animation ", name ); //nah, that just clutters cerr
-		return Animation
+		return std::make_pair( Animation
 		{
 			0,
 			1,
 			sf::seconds( 1.f )
-		};
+		}, false );
 	}
 	else
 	{
-		return it->second;
+		return std::make_pair( it->second, true );
 	}
 }

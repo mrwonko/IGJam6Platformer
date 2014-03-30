@@ -155,6 +155,7 @@ void Physics::Update( const sf::Time& delta )
 		movable->Update( delta );
 		Move( movable, delta );
 	}
+	FindCollisions();
 }
 
 static Physics::MoveResult operator~( Physics::MoveResult lhs )

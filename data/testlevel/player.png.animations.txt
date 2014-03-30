@@ -1,0 +1,7 @@
+24 32
+idle		0	1	1
+walkleft	1	1	1
+walkright	2	1	1
+jumpup		3	1	1
+jumpleft	4	1	1
+jumpright	5	1	1

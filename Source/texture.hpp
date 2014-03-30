@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <utility>
 
 class Texture
 {
@@ -24,7 +25,7 @@ public:
 
 	sf::IntRect GetFrameRect( unsigned int frame ) const;
 
-	Animation GetAnimation( const std::string& name ) const;
+	std::pair< Animation, bool > GetAnimation( const std::string& name ) const;
 
 private:
 	sf::Texture m_texture;

@@ -33,7 +33,7 @@ public:
 
 	typedef std::function< void( SpriteComponent& ) > AnimationOverCallback;
 
-	void SetAnimation( const std::string& name );
+	void SetAnimation( const std::string& name, const std::string& fallback = "idle" );
 	const std::string& GetAnimation() const { return m_curAnimationName;  }
 	void LoopAnimation( bool loop ) { m_loopAnimation = loop; }
 	void SetAnimationOverCallback( AnimationOverCallback callback ) { m_animationOverCallback = callback; }

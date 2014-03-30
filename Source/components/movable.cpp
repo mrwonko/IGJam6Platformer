@@ -3,6 +3,7 @@
 #include "rect.hpp"
 #include "gravity.hpp"
 #include "moveIntent.hpp"
+#include "health.hpp"
 #include "../physics.hpp"
 #include "../debug.hpp"
 
@@ -77,6 +78,15 @@ void MovableComponent::Update( const sf::Time& delta )
 	{
 		m_velocity = m_gravity->Apply( m_velocity, delta );
 	}
+
+	// ignore the intent of dead entities (gravity can still pull them down though)
+	auto health = HealthComponent::Get( m_owner );
+	if( health && health->IsDead() )
+	{
+		m_velocity.x = 0;
+		return;
+	}
+
 	if( m_moveIntent )
 	{
 		m_velocity = m_moveIntent->Apply( m_velocity, delta );
