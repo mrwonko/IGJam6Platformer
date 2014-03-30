@@ -58,16 +58,27 @@ const std::string& SpriteComponent::GetType( ) const
 
 void SpriteComponent::SetAnimation( const std::string& name, const std::string& fallback )
 {
-	m_curAnimationName = name;
+	if( m_curAnimationName == name )
+	{
+		return;
+	}
+	std::string newAnim = name;
 	auto p = m_texture->GetAnimation( name );
 	if( !p.second && fallback != name )
 	{
 		p = m_texture->GetAnimation( fallback );
+		newAnim = fallback;
 	}
 	if( !p.second && fallback != "idle" )
 	{
 		p = m_texture->GetAnimation( "idle" );
+		newAnim = "idle";
 	}
+	if( newAnim == m_curAnimationName )
+	{
+		return;
+	}
+	m_curAnimationName = newAnim;
 	m_curAnimation = p.first;
 	m_curFrame = m_curAnimation.startFrame;
 	m_sprite.setTextureRect( m_texture->GetFrameRect( m_curFrame ) );

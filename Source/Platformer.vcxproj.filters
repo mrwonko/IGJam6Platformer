@@ -105,6 +105,9 @@
     <ClCompile Include="entities\exit.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="levelManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component.hpp">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="entities\exit.hpp">
       <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="levelManager.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

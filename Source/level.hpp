@@ -11,6 +11,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
+class LevelManager;
 class TextureManager;
 class Texture;
 class Player;
@@ -23,7 +24,7 @@ namespace sf
 class Level
 {
 public:
-	Level( const std::string& levelpath, TextureManager& textureManager );
+	Level( const std::string& levelpath, LevelManager& levelManager );
 	~Level();
 	Level( const Level& ) = delete;
 	Level( Level&& ) = delete;
@@ -65,6 +66,7 @@ private:
 
 	GameplaySettings m_gameplaySettings;
 	TextureManager& m_textureManager;
+	LevelManager& m_levelManager;
 
 	// Mind the order! Entities must be destroyed before managers (Physics, SpriteGroup) since they'll unregister on destruction!
 
@@ -79,4 +81,6 @@ private:
 	std::unique_ptr< Player > m_player{ nullptr };
 	EntityManager m_entities;
 
+	bool m_delayedRestart{ false };
+	bool m_delayedProgress{ false };
 };

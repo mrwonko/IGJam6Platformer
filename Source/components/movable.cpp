@@ -19,6 +19,12 @@ MovableComponent::MovableComponent( Entity& owner, Physics& physics, const sf::V
 MovableComponent::~MovableComponent()
 {
 	m_physics.UnregisterMovable( *this );
+	/*
+	m_position = nullptr;
+	m_rect = nullptr;
+	m_moveIntent = nullptr;
+	m_gravity = nullptr;
+	*/
 }
 
 void MovableComponent::Init()

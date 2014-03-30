@@ -1,4 +1,5 @@
 #include "level.hpp"
+#include "levelManager.hpp"
 #include "vector2Comparator.hpp"
 #include "debug.hpp"
 #include "textureManager.hpp"
@@ -18,9 +19,10 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/View.hpp>
 
-Level::Level( const std::string& levelpath, TextureManager& textureManager )
+Level::Level( const std::string& levelpath, LevelManager& levelManager )
 : m_gameplaySettings( levelpath )
-, m_textureManager( textureManager )
+, m_textureManager( levelManager.GetTextureManager() )
+, m_levelManager( levelManager )
 {
 	EntityDefinitions entityDefinitions( LoadEntities( levelpath ) );
 	ImageDefinitions imageDefinitions( LoadImages( levelpath ) );
@@ -53,6 +55,20 @@ void Level::DrawTo( sf::RenderTarget& target )
 	m_images.DrawAll( target );
 	m_entitySprites.DrawAll( target );
 	m_playerSprite.DrawAll( target );
+
+	// HACK: this doesn't quite belong here, but I can't delete the level in the middle of the update cycle without invalidating iterators.
+	if( m_delayedRestart )
+	{
+		m_delayedRestart = false;
+		m_levelManager.RestartLevel();
+		return;
+	}
+	if( m_delayedProgress )
+	{
+		m_delayedProgress = false;
+		m_levelManager.NextLevel();
+		return;
+	}
 }
 
 void Level::LoadTiles( const std::string& levelpath, const ImageDefinitions& imageDefinitions, const EntityDefinitions& entityDefinitions )
@@ -416,12 +432,10 @@ void Level::SetPlayerIntent( const MoveIntentComponent::Intent& intent )
 
 void Level::OnPlayerKilled()
 {
-	// TODO
-	Debug::Error( "Player Death not implemented yet!" );
+	m_delayedRestart = true;
 }
 
 void Level::OnExitReached()
 {
-	// TODO
-	Debug::Error( "Success not implemented yet!" );
+	m_delayedProgress = true;
 }

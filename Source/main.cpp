@@ -10,8 +10,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Sleep.hpp>
 
-#include "level.hpp"
-#include "textureManager.hpp"
+#include "levelManager.hpp"
 #include "time.hpp"
 #include "debug.hpp"
 
@@ -35,9 +34,10 @@ int main( int argc, char** argv )
 		if( fullscreen ) windowStyle |= sf::Style::Fullscreen;
 		sf::RenderWindow window( sf::VideoMode( width, height ), "Ridiculous Platformer", windowStyle );
 		window.setMouseCursorVisible( false );
+		window.clear();
+		window.display();
 
-		TextureManager textureManager;
-		Level testlevel( "../data/testlevel", textureManager );
+		LevelManager levelManager( "../data/" );
 
 		sf::Clock clock;
 		sf::Time lastFrameTime;
@@ -51,6 +51,10 @@ int main( int argc, char** argv )
 				if( ev.type == sf::Event::Closed || ( ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Escape ) )
 				{
 					window.close();
+				}
+				else if( ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::F1 )
+				{
+					levelManager.NextLevel();
 				}
 			}
 
@@ -76,14 +80,14 @@ int main( int argc, char** argv )
 				intent.right =
 					sf::Keyboard::isKeyPressed( sf::Keyboard::D )
 					|| sf::Keyboard::isKeyPressed( sf::Keyboard::Right );
-				testlevel.SetPlayerIntent( intent );
+				levelManager.SetPlayerIntent( intent );
 			}
 
 			// Draw
 			if( updated )
 			{
 				window.clear( );
-				testlevel.DrawTo( window );
+				levelManager.DrawTo( window );
 				window.display( );
 			}
 			else
@@ -96,5 +100,6 @@ int main( int argc, char** argv )
 	// "normal" runtime error exit (usually broken assets)
 	catch( Debug::FatalError )
 	{
+		return 1;
 	}
 }
